@@ -18,9 +18,9 @@
 
 # FIXME/TODO:
 # * scan list is replaced by "results table" but all of the scan list updating code is still in play...
-# 
+#
 # * Move _getAllLines() to DwaDataParser as a static method
-# 
+#
 # * pop-up to confirm that HV is on before run starts
 #
 # * When loading a scan with fewer than 8 active channels, the resonance numbers on the right sidebar of the Resonance tab don't get deleted for the inactive channels. Their values are kept to whatever the previous scan happened to be. This doesn't affect the submission to the DB, but is confusing when using the GUI.
@@ -31,14 +31,14 @@
 # * Configuration parameter to enable mains noise subtraction: This parameter is already in the firmware: bit 1 of register 1, i.e. 2nd bit of 2nd register. It now needs to be used in the software.
 #
 # * The noise sampling period, noise NCnv, active channels and relayMask parameters are unnecessary in the firmware. To avoid possible unforeseen issues in the firmware due to a bad configuration of them, they should be removed from the firmware and software.
-# 
+#
 # * Play audible alert after a scan is done?
 #   and/or bring focus to config tab?
 #
 # * can't just use self.recentScansTableRowInUse because rows may have been added
 #   to the scan since the A(f) data was loaded!
 #   Should probably get rid of self.recentScansTableRowInUse entirely
-# 
+#
 # * Handle STATUS frames that are pushed because of errors or voltage changes
 #   Write these to file (for button change or error)
 #   KEY = 0x61
@@ -51,9 +51,9 @@
 # * to sense "stale" values: every time a status frame arrives, reset a count-down timer (QTimer) of duration
 #   equal to the status frame period (plus a small amount). When that timer times out, trigger a call to a
 #   function that highlights values as stale (e.g. the 50Vac and 500Vdc indicators)
-# 
+#
 # * In automated scan, the config file gets a "statusPeriod" field, but it should only have statusPeriodSec
-# 
+#
 # * may need progress bars (or other indicator) for long processes such as:
 #   - submit to db
 #   - fetch resonances to compute tension
@@ -65,10 +65,10 @@
 # * Add scroll-bar to Advanced tab in Stimulus tab:
 #   https://stackoverflow.com/questions/63228003/add-scroll-bar-into-tab-pyqt5
 #   [was:] "Advanced" tab: not all items show (below the "config file contents" text area)
-# 
+#
 # * Replace hard-coded 'amplitudeData.json' string with AMP_DATA_FILE or similar
 #   same for 'resonanceData.json'
-# 
+#
 # * Add graphic of APA wires to Config tab
 #
 # * Filter glitches in A(f) prior to integration. (sigma-clipping and width can work). See e.g. V_A_10_361-363-...
@@ -111,7 +111,7 @@
 #    (not just when "configure scan list" is pushed)
 # * "Configure scan list" button should be renamed to "Configure single wire scan" if single wire is selected
 # * The new register to set an additional stimulus time for the first sample in the run,  stimTimeInitial,
-#   is a 24 bit register with the same units as the stimulus time, 2.56us, and is at address 0x2C. 
+#   is a 24 bit register with the same units as the stimulus time, 2.56us, and is at address 0x2C.
 # * Logging: is generally a mess. many log entries are printed to screen in duplicate...
 # * Logging: use RotatingFileHandler for log file, and don't create a new log file each time... ???
 # * Use rotatingfilehandler for the udpStream.txt, too!
@@ -212,7 +212,7 @@ SCAN_OUTPUT_DIRS = [OUTPUT_DIR_SCAN_DATA, OUTPUT_DIR_SCAN_DATA_ADVANCED]
 
 #OUTPUT_DIR_CONFIG = './config/'
 #OUTPUT_DIR_UDP_DATA = './udpData/'
-#OUTPUT_DIR_AMP_DATA = './ampData/'        
+#OUTPUT_DIR_AMP_DATA = './ampData/'
 CLOCK_PERIOD_SEC = 1e8
 SCAN_FREQUENCY_STEP_DEFAULT = 1/8  # Hz
 STIM_VIEW_OFFSET = 0
@@ -272,7 +272,7 @@ MAX_WIRE_SEGMENT = {
 # FIXME: these should be read from somewhere else (DwaConfigFile)...
 DATABASE_FIELDS = ['wireSegments', 'apaChannels', 'measuredBy', 'stage', 'apaUuid', 'layer', 'headboardNum', 'side', 'type']
 
-# Recent scan list 
+# Recent scan list
 SCAN_LIST_TABLE_HDRS = ['submitted', 'scanName', 'side', 'layer', 'headboardNum', 'measuredBy', 'apaUuid']
 SCAN_LIST_DATA_KEYS = ['submitted', 'scanName', 'side', 'layer', 'headboardNum', 'measuredBy', 'apaUuid', 'stage'] #'wireSegments'
 N_RECENT_SCANS = 500
@@ -334,7 +334,7 @@ class Scans(IntEnum):
 #    ScanConfigStatus.PENDING:'Pending'
 #}
 
-    
+
 #
 # Recent scan list
 SCAN_LIST_DATA_KEYS = ['submitted', 'scanName', 'side', 'layer', 'headboardNum',
@@ -373,15 +373,15 @@ SCAN_END_MODE_KEYWORD = 'scanEndMode'
 class ScanEnd(IntEnum):
     NORMAL  = 0  # scan ended normally
     ABORTED = 1  # scan ended because user pushed Abort button
-    
+
 class MainView(IntEnum):
     STIMULUS  = 0 # config/V(t)/A(f) [Stimulus view]
     RESULTS   = 1 # A(f) data and fitting
     TENSION   = 2 # Tension view
-    LOG       = 3 # Log-file output    
+    LOG       = 3 # Log-file output
     EVTVWR    = 4 # Event Viewer tab
 
-    
+
 class StimView(IntEnum):
     ''' for stackedWidget page indexing '''
     CONFIG   = 0+STIM_VIEW_OFFSET  # Show the configuration parameters
@@ -395,7 +395,7 @@ class ResultsView(IntEnum):
     TABLE = 0
     RAW = 1
     PROCESSED = 2
-    
+
 class TensionStatus(IntEnum):
     NOT_MEASURED = -1
     NOT_FOUND = -2
@@ -408,7 +408,7 @@ TAB_ACTIVE_MAIN = MainView.STIMULUS
 #TAB_ACTIVE_MAIN = MainView.EVTVWR
 TAB_ACTIVE_STIM = StimView.CONFIG
 TAB_ACTIVE_RESULTS = ResultsView.TABLE
-    
+
 class Shortcut(Enum):
     STIMULUS  = "CTRL+S"
     RESULTS   = "CTRL+R"
@@ -426,7 +426,7 @@ class Shortcut(Enum):
     EVT_PREV10 = qtc.Qt.Key_Down
     EVT_FIRST = "A"
     EVT_LAST = "E"
-    
+
 class Submitted(IntEnum):
     YES = 0
     NO = 1
@@ -464,15 +464,15 @@ class WorkerSignals(qtc.QObject):
     data = qtc.pyqtSignal(tuple)
     newUdpPayload = qtc.pyqtSignal(dict)
     status = qtc.pyqtSignal(tuple)
-    
+
 class Worker(qtc.QRunnable):
-    ''' 
+    '''
     Worker thread
 
     Inherits from QRunnable to handle worker thread setup, signals and wrap-up
 
     :param callback: The function callback to run on this worker thread
-    :                Supplied args and kwargs will be passed through to 
+    :                Supplied args and kwargs will be passed through to
     :                the runner
     :type callback: function
     :param args: Arguments to paasss to the callback function
@@ -483,7 +483,7 @@ class Worker(qtc.QRunnable):
     :param id: The id for this worker
     :param url: the url to retrieve
     '''
-    
+
     def __init__(self, fn, *args, **kwargs):
         super(Worker, self).__init__()
         # Store constructor arguments (re-used for processing)
@@ -492,13 +492,13 @@ class Worker(qtc.QRunnable):
         self.kwargs = kwargs
         self.signals = WorkerSignals()
         self.logger = logging.getLogger()
-        
+
         # Add the callback to our kwargs, if needed
         # this will be passed on to self.fn so that function
         # has access to the callback
         #kwargs['progress_callback'] = self.signals.progress
         #kwargs['newdata_callback'] = self.signals.newUdpPayload
-        
+
     @qtc.pyqtSlot()
     def run(self):
         '''
@@ -528,7 +528,7 @@ class Worker(qtc.QRunnable):
             self.signals.finished.emit() # Done
             print("\n ======== Worker.run() finally ========== \n")
             self.logger.info("Thread complete")
-        
+
 # new additions
 # From:
 # https://stackoverflow.com/questions/51404102/pyqt5-tabwidget-vertical-tab-horizontal-text-alignment-left
@@ -621,14 +621,14 @@ class TensionTableModel(qtc.QAbstractTableModel):
 
     def setData(self, dd):
         self._data = dd  # FIXME: do we need deepcopy?
-    
+
     def headerData(self, section, orientation, role):
         if role == qtc.Qt.DisplayRole:
             if orientation == qtc.Qt.Horizontal:
                 return str(sorted(self._data.keys())[section])
             if orientation == qtc.Qt.Vertical:
                 return str(section+1)
-    
+
 
 class SortFilterProxyModel(qtc.QSortFilterProxyModel):
     def __init__(self, *args, **kwargs):
@@ -652,13 +652,13 @@ class APA_Diagram_Model():
     def __init__(self):
         print("APA_Diagram_Model")
         self.signals = APA_Diagram_Signals()
-        
+
     def setStage(self, stage):
         self.apaStage = stage
 
     def setLayer(self, layer):
         self.apaLayer = layer
-        
+
     def setSide(self, side):
         self.apaSide = side
 
@@ -666,7 +666,7 @@ class APA_Diagram_Model():
     def setChannels(self, channels):
         self.apaChans = channels
         self.signals.dataChanged.emit()
-        
+
 class APA_Diagram_Signals(qtc.QObject):
     '''
     Defines the signals available from an APA_Diagram_Model
@@ -687,7 +687,7 @@ class MainWindow(qtw.QMainWindow):
                           ddp.Registers.D3, ddp.Registers.D4, ddp.Registers.D5,
                           ddp.Registers.D6, ddp.Registers.D7]
         # inclues wires & run & status registers
-        self.registers_all = [item for item in ddp.Registers]  
+        self.registers_all = [item for item in ddp.Registers]
 
         # Load the UI (built in Qt Designer)
         uic.loadUi(DAQ_UI_FILE, self)
@@ -716,10 +716,10 @@ class MainWindow(qtw.QMainWindow):
         self.initApaUuidSuggestions()
         self.initAPADiagram()
         self.someTensionsNotFound = False
-        
+
         # On connect, don't activate Start Scan buttons until we confirm that DWA is in IDLE state
         self.enableScanButtonTemp = False
-        
+
         ####self.logTextBox = QTextEditLogger(self.page_logging)
         self.logTextBox.appendPlainText("log viewing not yet implemented")
         #logging.getLogger().addHandler(self.logTextBox)
@@ -728,9 +728,9 @@ class MainWindow(qtw.QMainWindow):
         #self.logHandler = QtHandler()
         #self.logHandler.setFormatter(logging.Formatter("%(levelname)s:%(message)s"))
         #self.logger.addHandler(self.logHandler)
-        
+
         self.logFilename_val.setText(self.logFilename)  # must come after loadUi() call
-        self.logFilenameLog_val.setText(self.logFilename)  
+        self.logFilenameLog_val.setText(self.logFilename)
         #self.log_tb.append("logging window...")  # FIXME... how to update...?
 
         self.configFileName.setText(DWA_CONFIG_FILE)
@@ -738,11 +738,11 @@ class MainWindow(qtw.QMainWindow):
         # Event viewer tab stuff
         self._configureEventViewer()
         self.evtData = None
-        
+
         # Make handles for widgets in the UI
         #self.stack = self.findChild(qtw.QStackedWidget, "stackedWidget")  #FIXME: can you just use self.stackedWidget ???
         #self.stack.setStyleSheet("background-color:white")
-        
+
         # self.tabWidgetStage is the main set of tabs showing each stage in the process
         # self.tabWidgetStim is the set of tabs under the stimulus tab
         self.currentViewStage = TAB_ACTIVE_MAIN
@@ -753,13 +753,13 @@ class MainWindow(qtw.QMainWindow):
         #self.tabWidgetStages.setCurrentIndex(self.currentViewStage)
         #self.tabWidgetStim.setCurrentIndex(self.currentViewStim)
         self.DATA_TO_PLOT = False
-        
+
         # testing updating tab labels
         self._setTabTooltips()
-        
+
         # Connect slots/signals
         self._connectSignalsSlots()
-        
+
         # Tension Tab
         self._configureTensionTab()
 
@@ -767,7 +767,7 @@ class MainWindow(qtw.QMainWindow):
         self.apaChannels = [None]*N_DWA_CHANS
         self.activeRegisters = []
         self._configurePlots()
-        
+
         # make dummy data to display
         self._makeDummyData()
 
@@ -781,7 +781,7 @@ class MainWindow(qtw.QMainWindow):
         self._keyboardShortcuts()
 
         #self.getAnalysisVersion()
-        
+
         self._configureGUI()
         self._configureMultithreading()
 
@@ -798,30 +798,30 @@ class MainWindow(qtw.QMainWindow):
         self._configureAmps()
         self._initTimeseriesData()
         self.initPlottingUpdater()
-        
+
         # KLUGE to prevent a res freq InfLine from being added right after removal
         # via mouse click
         self.removedInfLine = False
-        
+
         # Info about current run
         self.stimFreqMin = 0
         self.stimFreqMax = 0
         self.advStimTimeContLineEdit.setText(f'{CONTINUITY_SCAN_PARAMS_DEFAULT["stimTime"]:10.9f}')
         self.advStimAmplitudeContLineEdit.setText(f'{CONTINUITY_SCAN_PARAMS_DEFAULT["stimMag"]}')
-        
+
         #self.dwaControllerState = None
 
         # For loading saved A(f) data
         self._initResonanceFitLines()
         self._initResonanceExpLines()
-        
-        # Socket for UDP connection to FPGA    
+
+        # Socket for UDP connection to FPGA
         self.sock = None
 
         # Start listening for UDP data (different from TCP/IP connection to uzed)
         self.verbose = 1
         self.udpConnect()
-        
+
     # end of __init__ for class MainWindow
 
     # Moved to process/process_scan.py
@@ -845,7 +845,7 @@ class MainWindow(qtw.QMainWindow):
 
         for ii, val in enumerate(buttonVals):
             self.setPushButtonStatus(ii, val)
-        
+
     def setDwaErrorStatus(self, errorString):
         #print(f"setDwaErrorStatus: {errorString}")
         if errorString is None:
@@ -860,7 +860,7 @@ class MainWindow(qtw.QMainWindow):
             else:
                 label = 'OK'
                 color = 'green'
-            
+
         borderSize = 3
         style = f"border: {borderSize}px solid {color};"
         #print(f"tyle = {style}")
@@ -892,13 +892,13 @@ class MainWindow(qtw.QMainWindow):
         getattr(self, f'dwaPB{buttonId}Status').setStyleSheet(style)
         #self.dwaPB0Status.setStyleSheet(style)
         #self.dwaPB1Status.setStyleSheet(style)
-        
+
     def generateScanListEntry(self, scanDir, submitted=None):
-        
+
         entry = {}
         for kk in SCAN_LIST_DATA_KEYS:  # populate with default/garbage
             entry[kk] = None
-            
+
         ampFilename = os.path.join(scanDir, 'amplitudeData.json')
         #print("generateScanListEntry()")
         #print(f"  ampFilename = {ampFilename}")
@@ -921,9 +921,9 @@ class MainWindow(qtw.QMainWindow):
                 submitted = Submitted.YES
             except:
                 submitted = Submitted.NO
-                
+
         data['submitted'] = submitted
-        
+
         for kk in SCAN_LIST_DATA_KEYS: # populate with useful information
             try:
                 entry[kk] = data[kk]
@@ -945,7 +945,7 @@ class MainWindow(qtw.QMainWindow):
         print(f'uuids: {uuids}')
 
         # (should update the list of APA UUIDs during the GUI session)
-        
+
         # Store the UUIDs in the model
         self.apaUuidListModel = APA_UUID_List_Model()
         self.apaUuidListModel.setStringList(uuids)
@@ -960,7 +960,7 @@ class MainWindow(qtw.QMainWindow):
         if newUuid not in uuids:         # if the new UUID not already in the list, then add it
             uuids.insert(0, newUuid)
         self.apaUuidListModel.setStringList(uuids)
-        
+
     def initTensionTable(self):
         print("init")
         # self.tensionData = {
@@ -978,14 +978,14 @@ class MainWindow(qtw.QMainWindow):
         self.scanConfigTableModel = qtg.QStandardItemModel()
         self.scanConfigTableModel.setHorizontalHeaderLabels(SCAN_CONFIG_TABLE_HDRS)
         self.scanConfigTable.setModel(self.scanConfigTableModel)
-        self.scanConfigTable.horizontalHeader().setResizeMode(qtw.QHeaderView.ResizeToContents) 
+        self.scanConfigTable.horizontalHeader().setSectionResizeMode(qtw.QHeaderView.ResizeToContents) 
         self.scanConfigTable.setSortingEnabled(False)
         self.scanConfigTable.setSelectionBehavior(qtw.QTableView.SelectRows)  # click highlights full row
         self.scanConfigTable.setSelectionMode(qtw.QTableView.SingleSelection) # only select one item at a time
         #self.scanConfigTable.setEditTriggers(qtw.QTableView.NoEditTriggers)
         #self.scanConfigTable.doubleClicked.connect(self.scanConfigTableRowDoubleClicked)
         self.scanConfigTable.selectionModel().selectionChanged.connect(self.setAPADiagram)
-        
+
     def resultsTableInit(self):
         self.recentScansTableModel = qtg.QStandardItemModel()
         self.recentScansTableModel.setHorizontalHeaderLabels(RESULTS_TABLE_HDRS)
@@ -993,7 +993,7 @@ class MainWindow(qtw.QMainWindow):
         self.recentScansFilterProxy.setSourceModel(self.recentScansTableModel)
         self.recentScansTableView.setModel(self.recentScansFilterProxy)
         #self.recentScansTableView.resizeColumnsToContents()
-        self.recentScansTableView.horizontalHeader().setResizeMode(qtw.QHeaderView.ResizeToContents) 
+        self.recentScansTableView.horizontalHeader().setSectionResizeMode(qtw.QHeaderView.ResizeToContents)
 
         self.recentScansTableView.setSortingEnabled(True)
         self.recentScansTableView.setSelectionBehavior(qtw.QTableView.SelectRows)
@@ -1001,7 +1001,7 @@ class MainWindow(qtw.QMainWindow):
         self.recentScansTableView.doubleClicked.connect(self.recentScansRowDoubleClicked)
         self.recentScansTableView.setSelectionMode(qtw.QTableView.SingleSelection) # only select one item at a time
         ##https://doc.qt.io/qt-5/qabstractitemview.html#SelectionMode-enum
-        
+
         # Connect the LineEdit scan list filter boxes to slots
         # Measurement Time filter
         le = self.filterLineEditDate
@@ -1047,14 +1047,14 @@ class MainWindow(qtw.QMainWindow):
     def resultsTableLoad(self):
         # Empty the table model...
         self.recentScansTableModel.removeRows( 0, self.recentScansTableModel.rowCount() )
-        
+
         # Fresh read of JSON file using user-entered APA UUID
         #self.readResultsJSON(make_new=False)
 
         resultsDict = self.getResultsDict()
         if resultsDict is None:
             return
-        
+
         self.resultsTableUpdate(resultsDict)
 
     def resultsTableUpdate(self, resultsDict):
@@ -1073,7 +1073,7 @@ class MainWindow(qtw.QMainWindow):
         # Populate the table with JSON data
         # should we sort the entries in the dict before populating the model?
         #i = self.recentScansTableModel.rowCount()
-        
+
         for stage in APA_STAGES_SCANS:
             if stage not in resultsDict:
                 continue
@@ -1088,17 +1088,17 @@ class MainWindow(qtw.QMainWindow):
                             scanDict = segmentDict[scanId]
 
                             items = [None]*len(RESULTS_TABLE_HDRS)
-                            
+
                             # Stage
                             if stage == 'Installation (Top)' or stage == 'Installation (Bottom)': stage = 'Installation'
                             items[Results.STAGE] = qtg.QStandardItem(stage)
-                            
+
                             # Wire segment
                             items[Results.WIRE_SEGMENT] = qtg.QStandardItem(wireSegmentStr)
 
                             # Layer
                             items[Results.LAYER] = qtg.QStandardItem(layer)
-                            
+
                             # Side
                             items[Results.SIDE] = qtg.QStandardItem(channel_map.electrical_side_to_physical_side(side, layer, int(wireSegmentStr)))
 
@@ -1109,8 +1109,8 @@ class MainWindow(qtw.QMainWindow):
                             else:
                                 strdatetime = toks[4]
                                 headboard = toks[2]
-                                
-                            # Headboard 
+
+                            # Headboard
                             items[Results.HEADBOARD] = qtg.QStandardItem(headboard)
 
                             # Measurement Time
@@ -1118,7 +1118,7 @@ class MainWindow(qtw.QMainWindow):
                             yyyymmdd = f'{strdatetime[0:4]}-{strdatetime[4:6]}-{strdatetime[6:8]}'
                             hhmmss   = f'{strdatetime[9:11]}:{strdatetime[11:13]}:{strdatetime[13:]}'
                             displayTime = f'{yyyymmdd} {hhmmss}'
-                            
+
                             items[Results.MSRMT_TIME] = qtg.QStandardItem(displayTime)
                             #items[Results.MSRMT_TIME] = qtg.QStandardItem(strdatetime)
                             ##dtdatetime = datetime.datetime.strptime(strdatetime, date_format)
@@ -1127,7 +1127,7 @@ class MainWindow(qtw.QMainWindow):
 
                             # Measurement Type
                             items[Results.MSRMT_TYPE] = qtg.QStandardItem('Tension')
-                            
+
                             # Scan name
                             items[Results.SCAN] = qtg.QStandardItem(scanId)
                             # Tension
@@ -1137,19 +1137,19 @@ class MainWindow(qtw.QMainWindow):
                                     resultStr = str(tension)
                                 else:
                                     resultStr = str(round(tension,3))
-                                
+
                                 # Status
                                 confidenceStr = 'Unknown'
                                 if tension == 'Not Found' or tension == None or 'tension_confidence' not in scanDict.keys() or tension <= 0:
                                     pass
                                 else:
                                     confidenceStr = str(round(scanDict["tension_confidence"],3))
-                            
+
                             elif "continuous" in scanDict.keys():
                                 continuous = scanDict["continuous"]
                                 resultStr = continuous
                                 submitted = 'N/A'
-                                
+
                                 # Status
                                 confidenceStr = 'N/A'
                             items[Results.RESULT] = qtg.QStandardItem(resultStr)
@@ -1161,7 +1161,7 @@ class MainWindow(qtw.QMainWindow):
                                 submitted = 'N/A'
 
                             items[Results.SUBMITTED] = qtg.QStandardItem(submitted)
-            
+
                             self.recentScansTableModel.appendRow(items)
 
         print(f"Nrows = {self.recentScansTableModel.rowCount()}")
@@ -1185,7 +1185,7 @@ class MainWindow(qtw.QMainWindow):
         filterString = filterString.rstrip("|")
         print(filterString)
         self.recentScansFilterProxy.setFilterByColumn(qtc.QRegExp(filterString,qtc.Qt.CaseSensitive),Results.STAGE)
-        
+
     def filterLayerChanged(self):
         filterString = ''
         for layer in APA_LAYERS:
@@ -1194,7 +1194,7 @@ class MainWindow(qtw.QMainWindow):
         if len(filterString): filterString = filterString[:-1]
         print(filterString)
         self.recentScansFilterProxy.setFilterByColumn(qtc.QRegExp(filterString,qtc.Qt.CaseSensitive),Results.LAYER)
-        
+
     def filterSideChanged(self):
         filterString = ''
         for side in APA_SIDES:
@@ -1235,18 +1235,18 @@ class MainWindow(qtw.QMainWindow):
         print(f"double-clicked row: {mi.row()}")
         print(f"double-clicked col: {mi.column()}")
         self.loadResultsScan()
-        
+
     def initPlottingUpdater(self):
         self.plottingTimer = qtc.QTimer()
         self.plottingTimer.timeout.connect(self.updatePlots)
         self.plottingTimer.setInterval(int(PLOT_UPDATE_TIME_SEC*1000)) # millseconds
         self.plottingTimer.start()
-        
+
     def _initTimeseriesData(self):
         self.adcData = {}
         for reg in self.registers:
             self.adcData[reg] = {}
-            
+
         #self.adcData[reg]['time'] = list
         #self.adcData[reg]['ADC']  = list
         #self.adcData[reg]['freq'] = float
@@ -1261,12 +1261,12 @@ class MainWindow(qtw.QMainWindow):
         self.apaDiagramModel.setSide('')
         self.apaDiagramModel.setChannels([])
         self.APA_Diagram_View.setModel(self.apaDiagramModel)
-                
+
     def _configureAmps(self):
         self.ampData = {}  # hold amplitude vs. freq data for a scan (and metadata)
-        self.resonantFreqs = {}  
-        self.expectedFreqs = {}  
-        
+        self.resonantFreqs = {}
+        self.expectedFreqs = {}
+
         # Set default A(f) peak detection parameters
         # self.resFitParams = {}
         # self.resFitParams['preprocess'] = {'detrend':True}  # detrend: subtract a line from A(f) before processing?
@@ -1299,8 +1299,8 @@ class MainWindow(qtw.QMainWindow):
             logging.info("  Directory did not exist... made {}".format(self.scanDataDir))
         except FileExistsError:
             # directory already exists
-            logging.warning("  Directory already exists: [{}]".format(self.scanDataDir))        
-        
+            logging.warning("  Directory already exists: [{}]".format(self.scanDataDir))
+
 
         ###########################################
         # Ensure there is a directory to save advanced scan data
@@ -1323,7 +1323,7 @@ class MainWindow(qtw.QMainWindow):
         except FileExistsError:
             logging.warning("  Directory already exists: [{}]".format(self.scanStatusDir))
 
-            
+
         ###########################################
         # Ensure there is a directory to save autogenerated config files
         #self.configFileDir = OUTPUT_DIR_CONFIG
@@ -1337,16 +1337,16 @@ class MainWindow(qtw.QMainWindow):
         #    logging.warning("  Directory already exists: [{}]".format(self.configFileDir))
 
 
-            
+
         self.fnOfReg = {}  # file names for output (empty for now)
         #self._makeOutputFilenames() #TODO: no longer works now that directory is made at start of scan
-        
 
-            
+
+
     def _configureMultithreading(self):
         # signals for callback actions
         self.signals = WorkerSignals()
-      
+
         ###########################################
         # Set up multithreading
         self.threadPool = qtc.QThreadPool()
@@ -1363,7 +1363,7 @@ class MainWindow(qtw.QMainWindow):
         #SYSTEM_PLATFORM   = platform.system().upper()
         #psys = platform.system().upper()
         print(f"platform.system() = {SYSTEM_PLATFORM}")
-            
+
         if SYSTEM_PLATFORM == 'WINDOWS':
             pass
             #self.showMaximized()
@@ -1384,13 +1384,13 @@ class MainWindow(qtw.QMainWindow):
         #self.setStyleSheet("background-color: white;")
         # set the border style
         #self.setStyleSheet("border : 1px solid black;")
-        
+
         self.show()
 
     def _configureTensionTab(self):
         for stage in APA_STAGES_TENSIONS:
             self.tensionStageComboBox.addItem(stage)
-    
+
     def _connectSignalsSlots(self):
         self.tabWidgetStages.currentChanged.connect(self.tabChangedStage)
         self.tabWidgetStim.currentChanged.connect(self.tabChangedStim)
@@ -1475,7 +1475,7 @@ class MainWindow(qtw.QMainWindow):
         #if evt.modifiers() == (qtc.Qt.AltModifier | qtc.Qt.ShiftModifier):
         #    print("ALT+SHIFT held down")
 
-        
+
     def _addF0LineViaClick(self, evt):
         # DEFUNCT: WE don't add a line by clicking anymore
         # FIXME: don't add line if there is already an f0 sufficiently close...
@@ -1485,7 +1485,7 @@ class MainWindow(qtw.QMainWindow):
             print("warning: InfLine was just removed... will not add a new one in the same place...")
             self.removedInfLine = False
             return
-        
+
         items = self.resonanceProcessedDataGLW.scene().items(evt.scenePos())
         clickedItems = [x for x in items if isinstance(x, pg.PlotItem)]
         if self.verbose:
@@ -1503,7 +1503,7 @@ class MainWindow(qtw.QMainWindow):
             chan = self.resonanceProcessedPlots.index(ci)
         except ValueError:
             print(f"error: PlotItem {ci} not found in self.resonanceProcessedPlots: {self.resonanceProcessedPlots}")
-        
+
         if self.verbose:
             print(f"ci, chan = {ci}, {chan}")
         # Convert to data coordinates
@@ -1533,7 +1533,7 @@ class MainWindow(qtw.QMainWindow):
             self.resonantFreqs[chan].sort()
 
         self.resFreqUpdateDisplay()
-        
+
     def _configureEventViewer(self):
         #self.evtVwr_runName_val.setText(EVT_VWR_TIMESTAMP)
         #self.evtVwr_runName_val.returnPressed.connect(self.loadEventDataViaName)
@@ -1549,7 +1549,7 @@ class MainWindow(qtw.QMainWindow):
                     self.evtVwrPlots[-1].setTitle(plotTitle)
                 else:
                     # A(f) data for all channels
-                    self.evtVwrPlots.append(self.evtVwrPlotsGLW.addPlot())                    
+                    self.evtVwrPlots.append(self.evtVwrPlotsGLW.addPlot())
                 chanNum += 1
             self.evtVwrPlotsGLW.nextRow()
 
@@ -1570,7 +1570,7 @@ class MainWindow(qtw.QMainWindow):
             print("closing socket")
             self.sock.close()
             self.sock = None
-            
+
         logging.info("making socket")
         self.sock = socket.socket(family=socket.AF_INET,  # internet
                                   type=socket.SOCK_DGRAM) # UDP
@@ -1584,7 +1584,7 @@ class MainWindow(qtw.QMainWindow):
         self.sock.bind( self.udpServerAddressPort ) # this is required on OSX...
         #self.sock.settimeout(self.udpTimeoutSec)    # if no new data comes from server, quit
         #self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #FIXME: this is not necessary
-        
+
         # Start listening for UDP data in a Worker thread
         #self.udpListen()
 
@@ -1619,7 +1619,7 @@ class MainWindow(qtw.QMainWindow):
         if 'client_IP' in self.daqConfig and self.daqConfig['client_IP'] is not None:
             print(f"setting client_IP to {self.daqConfig['client_IP']}")
             self.uz.setUdpAddress(self.daqConfig['client_IP'])
-        
+
         self.clientIp_val.setText(self.daqConfig['client_IP'])
         self.dwaIp_val.setText(self.daqConfig['DWA_IP'])
 
@@ -1634,11 +1634,11 @@ class MainWindow(qtw.QMainWindow):
             out = self.uz.readValue('00000013')  # Firmware date code (YYMMDD)
             dateCodeYYMMDD = '{:06X}'.format(out[-1])
             print(f"Firmware date code [YYMMDD] = {dateCodeYYMMDD}")
-            self.connectedToUzed = True 
+            self.connectedToUzed = True
         except:
             self.connectedToUzed = False
             print("could not connect to the microzed...")
-        
+
         if self.connectedToUzed:
             self.btnDwaConnect.setText("Re-connect")
             self.setDwaStatusLabel('connected')
@@ -1646,12 +1646,12 @@ class MainWindow(qtw.QMainWindow):
             self.enableScanButtonTemp = True
             self.connectLabel.setText("")
             self._scanButtonEnable()
-        
+
         #out = self.uz.readValue('00000012')  # Firmware date code (HHMMSS)
         #print(f"Firmware date code [HHMMSS] = {hex(out[-1])}")
 
         # Read status frame period (0x35)
-        out = self.uz.readValue('00000035') 
+        out = self.uz.readValue('00000035')
         print(f"Read-back status frame period: {out}")
         statusFramePeriod_str = '{:.1f} s'.format(out[-1]*2.56e-6)
         self.statusFramePeriod_val.setText(statusFramePeriod_str)
@@ -1675,16 +1675,16 @@ class MainWindow(qtw.QMainWindow):
         print(f"dwaMac_str = {dwaMac_str}")
         self.dwaMacAddress_val.setText(dwaMac_str)
 
-        
+
         # Can get MAC address:
         # Register Ox3B is the MSBs
         # Register Ox3C is the LSBs
-        
+
     def _initResonanceFitLines(self):
         self.resFitLines = {'raw':{},  # hold instances of InfiniteLines for both
                             'proc':{},  # raw and processed A(f) plots
                             'procDebug':{} # for debugging
-                            }  
+                            }
         for reg in self.registers:
             self.resFitLines['raw'][reg] = []
             self.resFitLines['proc'][reg] = []
@@ -1694,12 +1694,12 @@ class MainWindow(qtw.QMainWindow):
         self.resExpLines = {'raw':{},  # hold instances of InfiniteLines that indicate expected resonance positions
                             'proc':{},  # for both raw and processed A(f) plots
                             'procDebug':{} # for debugging
-                            }  
+                            }
         for reg in self.registers:
             self.resExpLines['raw'][reg] = []
             self.resExpLines['proc'][reg] = []
             self.resExpLines['procDebug'][reg] = []
-            
+
     def _setTabTooltips(self):
         self.tabWidgetStages.setTabToolTip(MainView.STIMULUS, Shortcut.STIMULUS.value)
         self.tabWidgetStages.setTabToolTip(MainView.RESULTS, Shortcut.RESULTS.value)
@@ -1724,7 +1724,7 @@ class MainWindow(qtw.QMainWindow):
         self.logger = logging.getLogger(__name__)
         #self.logger.setLevel(logging.INFO)
         self.logger.setLevel(logging.CRITICAL)
-        
+
         self.logFilename = os.path.join(self.logDir,    # e.g. ./logs/20200329T120531.log
                                         datetime.datetime.now().strftime("%Y%m%dT%H%M%S.log") )
         loggingFormatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
@@ -1737,7 +1737,7 @@ class MainWindow(qtw.QMainWindow):
         fh.setLevel(logging.CRITICAL)
         fh.setFormatter(loggingFormatter)
         self.logger.addHandler(fh)
-        
+
         # log output to terminal
         ch = logging.StreamHandler()
         #ch.setLevel(logging.DEBUG)
@@ -1764,7 +1764,7 @@ class MainWindow(qtw.QMainWindow):
         if layer is None:
             print("ERROR: must specify layer")
             return
-        
+
         # Scan type
         item = qtg.QStandardItem()
         #ty = 'Tension' if scanType == 'tension' else 'Continuity'
@@ -1779,14 +1779,14 @@ class MainWindow(qtw.QMainWindow):
         item.setData(layer, qtc.Qt.DisplayRole)
         item.setTextAlignment(qtc.Qt.AlignLeft)
         self.scanConfigTableModel.setItem(row, Scans.LAYER, item)
-        
+
         # Status type
         item = qtg.QStandardItem()
         #item.setData(ScanConfigStatusString[ScanConfigStatus.PENDING], qtc.Qt.DisplayRole)
         item.setData('Pending', qtc.Qt.DisplayRole)
         item.setTextAlignment(qtc.Qt.AlignLeft)
         self.scanConfigTableModel.setItem(row, Scans.STATUS, item)
-        
+
         # Wire numbers
         wires = rd['wireSegments']
         wires.sort(key = int)
@@ -1814,7 +1814,7 @@ class MainWindow(qtw.QMainWindow):
                 advFss = self.advFssLineEdit.text().strip()
                 if advFss != "":
                     freqStep = float(advFss) # FIXME: this can cause crash if non-numeric entry...
-                    
+
         elif scanType == 'Continuity':
             freqMin  = CONTINUITY_SCAN_PARAMS_DEFAULT['stimFreqMin']
             freqMax  = CONTINUITY_SCAN_PARAMS_DEFAULT['stimFreqMax']
@@ -1831,7 +1831,7 @@ class MainWindow(qtw.QMainWindow):
                 advFss = self.advFssContLineEdit.text().strip()
                 if advFss != "":
                     freqStep = float(advFss) # FIXME: this can cause crash if non-numeric entry...
-                    
+
         # Populate table
         # Freq min
         item = qtg.QStandardItem()
@@ -1851,7 +1851,7 @@ class MainWindow(qtw.QMainWindow):
         item.setTextAlignment(qtc.Qt.AlignHCenter)
         self.scanConfigTableModel.setItem(row, Scans.FREQ_STEP, item)
         self.scanConfigTable.resizeColumnsToContents()
-    
+
     def configureScans(self):
         print("configureScans")
         self.scanConfigTableModel.removeRows( 0, self.scanConfigTableModel.rowCount() )
@@ -1862,7 +1862,7 @@ class MainWindow(qtw.QMainWindow):
         else:
             layers = [configLayer]
         print(f'layers = {layers}')
-        
+
         configHeadboard = self.configHeadboardSpinBox.value()
         useAdvancedParamsRes  = not self.advDisableResParamCb.isChecked()
         useAdvancedParamsCont = not self.advDisableContParamCb.isChecked()
@@ -1879,13 +1879,13 @@ class MainWindow(qtw.QMainWindow):
                 range_data = channel_frequencies.get_range_data_for_channels(configLayer, channels, MAX_FREQ)
                 #print(f'range_data = {range_data}')
                 rd = range_data[0]
-    
+
                 if self.doContinuity:
                     # advanced params?
                     self.scanConfigTableAddRow(rd, row, scanType='Continuity', useAdvanced=useAdvancedParamsCont, layer=configLayer)
                     self.range_data_list.append(rd)
                     row += 1
-                   
+
                 if self.doTension:
                     self.scanConfigTableAddRow(rd, row, scanType='Tension', useAdvanced=useAdvancedParamsRes, layer=configLayer)
                     self.range_data_list.append(rd)
@@ -1902,7 +1902,7 @@ class MainWindow(qtw.QMainWindow):
             row = self.scanConfigTable.selectedIndexes()[0].row()
         else:
             row = 0
-            
+
         rd = self.range_data_list[row]
 
         self.apaDiagramModel.setStage(self.configStageComboBox.currentText())
@@ -1980,11 +1980,11 @@ class MainWindow(qtw.QMainWindow):
                                                                                                   orientation='horizontal',
                                                                                                   movable=False))
                 self.tensionPlots['tensionOfWireNumber'][layer][side].setYRange(3,10)
-        # # tensionSpecRegion = pg.LinearRegionItem(values=self.tensionData["GA"], orientation='horizontal',  movable=False) 
+        # # tensionSpecRegion = pg.LinearRegionItem(values=self.tensionData["GA"], orientation='horizontal',  movable=False)
 
         # can add other kinds of plots here (e.g. histograms)
 
-        
+
         #for side in APA_SIDES:
         #    self.tensionPlots[side] = (self.tensionGLW.addPlot())
         #    self.tensionPlots[side].setTitle(f'Side {side}')
@@ -2001,8 +2001,8 @@ class MainWindow(qtw.QMainWindow):
         # pos = [{'pos': [i,self.tensionData["GA"][i]]} for i in range(MAX_WIRE_SEGMENT)]
         # scatter.setData(pos)
         # self.tensionPlots['tensionOfWireNumber'].addItem(scatter)
-            
-        
+
+
     def printOutput(self, s):
         print("printOutput():")
         print(s)
@@ -2018,10 +2018,10 @@ class MainWindow(qtw.QMainWindow):
 
     def submitTensionsThreadComplete(self):
         print("submitTensionsThread complete!")
-        
+
     def _makeDummyData(self):
         # V(t)
-        self.dummyData = {}  
+        self.dummyData = {}
         xx = np.linspace(0, 2*np.pi, 32)
         for ii in range(9):
             self.dummyData[ii] = {'x':xx[:],
@@ -2042,7 +2042,7 @@ class MainWindow(qtw.QMainWindow):
         self.dummyDataTension = {'x':xx[:],
                                  'y':tt[:]}
 
-            
+
     def _makeCurves(self):
         ''' make one curve in each pyqtgraph PlotWidget '''
         # FIXME: merge all curves into self.curves = {}
@@ -2070,7 +2070,7 @@ class MainWindow(qtw.QMainWindow):
         self.curves['tension'] = {} # Wire tension plots (multiple figures, all on "tension" page)
         self.curves['evtVwr'] = {'V(t)':{}, 'A(f)':{}} # V(t) and A(f)
         self.curvesFit = {}  # FIXME: kluge -- merge w/ self.curves
-        self.curvesFit['evtVwr'] = {'V(t)':{}} # V(t) 
+        self.curvesFit['evtVwr'] = {'V(t)':{}} # V(t)
         self.curvesFit['grid'] = {} # V(t), grid
         self.curvesFit['chan'] = {} # V(t), chan
         amplAllPlotColors = ['#2a1636', '#541e4e', '#841e5a', '#b41658',
@@ -2078,7 +2078,7 @@ class MainWindow(qtw.QMainWindow):
         amplAllPlotPens = [pg.mkPen(color=col) for col in amplAllPlotColors]
         vtAllPlotColors = amplAllPlotColors[:]
         vtAllPlotPens = amplAllPlotPens[:]
-        
+
         for pen in amplAllPlotPens:
             pen.setWidth(3)
         amplPlotPen = pg.mkPen(color=(0,0,0), style=qtc.Qt.DotLine, width=1)
@@ -2103,7 +2103,7 @@ class MainWindow(qtw.QMainWindow):
                                                                                     pen=amplAllPlotPens[loc])
             # for testing only
             #getattr(self, f'pw_amplgrid_{loc}').setRange(xRange=(0, 1000), yRange=(0,35000), update=True)
-           
+
             # A(f), all channels on single axes
             self.curves['amplgrid']['all'][loc] = getattr(self, f'pw_amplgrid_all').plot([], pen=amplAllPlotPens[loc])
             # A(f) plots (channel view)
@@ -2111,7 +2111,7 @@ class MainWindow(qtw.QMainWindow):
             # Fitting f0 to A(f) plots
             self.curves['resRawFit'][loc] = self.resonanceRawPlots[loc].plot([], symbol='o', symbolSize=2, symbolBrush='k', symbolPen='k', pen=amplPlotPen)
             self.curves['resProcFit'][loc] = self.resonanceProcessedPlots[loc].plot([], symbol='o', symbolSize=2, symbolBrush='k', symbolPen='k', pen=amplPlotPen)
-            
+
         # add in the main window, too (large view of V(t) for a single channel)
         self.curvesFit['chan']['main'] = getattr(self, f'pw_chan_main').plot([], pen=fitPen)
         self.curves['chan']['main'] = getattr(self, f'pw_chan_main').plot([], symbol='o', symbolSize=4, symbolBrush='k', symbolPen='k', pen=None)
@@ -2130,7 +2130,7 @@ class MainWindow(qtw.QMainWindow):
             for side in APA_SIDES:
                 self.curves['tension']['tensionOfWireNumber'][layer][side] = self.tensionPlots['tensionOfWireNumber'][layer][side].plot([], pen=None, symbolBrush=tensionSymbolBrush, symbolPen=tensionSymbolPen, symbolSize=tensionSymbolSize)
         #[layer+side] = pg.ScatterPlotItem(pen=tensionPen, symbol='o', size=1)
-        
+
         ### Tension information
         ###self.curves['tension']['tensionOfWireNumber'] = self.tensionPlots['tensionOfWireNumber'].plot([], symbol='o', symbolSize=2, symbolBrush='k', symbolPen='k', pen=None)
 
@@ -2151,7 +2151,7 @@ class MainWindow(qtw.QMainWindow):
         f0Pen = pg.mkPen(color='#000000', width=2, style=qtc.Qt.DashLine)
         self.curves['evtVwr']['A(f)']['marker'] = self.evtVwrPlots[-1].addLine(x=0, movable=True, pen=f0Pen)
         self.curves['evtVwr']['A(f)']['marker'].sigPositionChangeFinished.connect(self._evtVwrF0LineMoved)
-        
+
     def _plotDummyAmpl(self):
         # A(f), chan view, large plot
         self.curves['amplchan']['main'].setData(self.dummyDataAmpl[self.chanViewMainAmpl]['x'],
@@ -2166,7 +2166,7 @@ class MainWindow(qtw.QMainWindow):
             # A(f) data, chan view (small plots)
             self.curves['amplchan'][ii].setData(self.dummyDataAmpl[ii]['x'],
                                                 self.dummyDataAmpl[ii]['y'])
-            
+
     def _plotDummyTimeseries(self):
         ''' plot data in channel mode
         all 8 channels are plotted on the small graphs at top
@@ -2189,7 +2189,7 @@ class MainWindow(qtw.QMainWindow):
         #    for side in APA_SIDES:
         #        self.curves['tension']['tensionOfWireNumber'][layer][side].setData(self.dummyDataTension['x'],
         #                                                                           self.dummyDataTension['y'])
-            
+
     def _keyboardShortcuts(self):
         print("Setting up keyboard shortcuts")
         # Stimulus Screen
@@ -2223,7 +2223,7 @@ class MainWindow(qtw.QMainWindow):
         # A(f) data (grid view)
         self.scAmplGridView = qtw.QShortcut(qtg.QKeySequence(Shortcut.A_GRID.value), self)
         self.scAmplGridView.activated.connect(self.viewAmplGrid)
-        
+
         # Show V(t) or A(f) (channel view)
         # FIXME: move these to "Shortucut" ENUM?
         chans = range(N_DWA_CHANS)
@@ -2250,7 +2250,7 @@ class MainWindow(qtw.QMainWindow):
         self.scEvtVwrFirst = qtw.QShortcut(qtg.QKeySequence(Shortcut.EVT_FIRST.value), self)
         self.scEvtVwrFirst.activated.connect(partial(self.evtVwrChange, -100000000))
 
-        
+
     @pyqtSlot()
     def evtVwrChange(self, step=None):
         #print('\n\n\n')
@@ -2259,7 +2259,7 @@ class MainWindow(qtw.QMainWindow):
         if self.evtData is None:
             print("No EVENT VIEWER data yet available")
             return
-        
+
         nfreq = len(self.evtData['freqUnion'])
         idx = self.evtData['freqIdx'] + step
         if idx < 0:
@@ -2267,10 +2267,10 @@ class MainWindow(qtw.QMainWindow):
         if idx >= nfreq:
             idx = nfreq-1
         self.evtData['freqIdx'] = idx
-        self.evtData['freqCurrent'] = self.evtData['freqUnion'][self.evtData['freqIdx']] 
+        self.evtData['freqCurrent'] = self.evtData['freqUnion'][self.evtData['freqIdx']]
         #print('\n\n\n')
         self.evtVwrUpdatePlots()
-        
+
     def evtVwrUpdatePlots(self, plotAmpl=False):
         #print("updating plots...")
         ifrq = self.evtData['freqIdx']
@@ -2285,7 +2285,7 @@ class MainWindow(qtw.QMainWindow):
             else:
                 self.curves['evtVwr']['V(t)'][ichan].setData([])
                 self.curvesFit['evtVwr']['V(t)'][ichan].setData([])
-            
+
         # update the amplitude plots in the 9th window
         self.curves['evtVwr']['A(f)']['marker'].setValue(self.evtData['freqUnion'][ifrq])
         # Kluge -- no need to redraw this... just redraw
@@ -2293,14 +2293,14 @@ class MainWindow(qtw.QMainWindow):
             for ichan in range(N_DWA_CHANS):
                 self.curves['evtVwr']['A(f)'][ichan].setData(self.evtData['freqUnion'], self.evtData['A(f)'][ichan])
 
-                
+
     def udpListen(self):
         # Pass the function to execute
         worker = Worker(self.startUdpReceiver, newdata_callback=self.signals.newUdpPayload)
         worker.signals.result.connect(self.printOutput)
         worker.signals.finished.connect(self.threadComplete)
         self.signals.newUdpPayload.connect(self.processUdpPayload)
-        
+
         # execute
         self.threadPool.start(worker)
 
@@ -2328,10 +2328,10 @@ class MainWindow(qtw.QMainWindow):
         elif state == 'notConnected':
             text = 'Not Connected'
             color = 'red'
-        
+
         self.dwaConnected_label.setText(text)
         self.dwaConnected_label.setStyleSheet(f"color: {color}")
-        
+
     ###############################################################
     # Auto Scan Thread
     def startScanThreadStarting(self):
@@ -2339,7 +2339,7 @@ class MainWindow(qtw.QMainWindow):
         self.btnScanCtrl.setStyleSheet("background-color : orange")
         self.btnScanCtrl.setText("Configuring DWA...")
         self.setDwaStatusLabel('configuring')
-    
+
     def startScanThreadComplete(self):
         self.setDwaStatusLabel('connected')
         self._setScanButtonAction('ABORT')
@@ -2363,7 +2363,7 @@ class MainWindow(qtw.QMainWindow):
         else:
             print("auto-starting next scan...")
             self.startScanThread()
-        
+
     @pyqtSlot()
     def startScanThreadHandler(self):
         # Launch either one scan or all scans
@@ -2385,7 +2385,7 @@ class MainWindow(qtw.QMainWindow):
         print(f"self.autoScansRemain = {self.autoScansRemain}")
 
         self.startScanThread()
-            
+
     def startScanThread(self):
         print("User has requested a new AUTO scan (DWA is IDLE)")
         self.scanType = ScanType.AUTO
@@ -2426,10 +2426,10 @@ class MainWindow(qtw.QMainWindow):
 
         # execute
         self.threadPool.start(worker)
-        
+
     @pyqtSlot()
     def submitResonancesThread(self):
-    
+
         # Pass the function to execute
         worker = Worker(self.submitResonances)  # could pass args/kwargs too..
         #worker.signals.result.connect(self.printOutput)
@@ -2440,7 +2440,7 @@ class MainWindow(qtw.QMainWindow):
 
     @pyqtSlot()
     def loadTensionsThread(self):
-    
+
         # Pass the function to execute
         worker = Worker(self.loadTensions)  # could pass args/kwargs too..
         #worker.signals.result.connect(self.printOutput)
@@ -2451,7 +2451,7 @@ class MainWindow(qtw.QMainWindow):
 
     @pyqtSlot()
     def submitTensionsThread(self, selectedDwaChan=None):
-    
+
         # Pass the function to execute
         worker = Worker(self.submitTensions, selectedDwaChan)  # could pass args/kwargs too..
         #worker.signals.result.connect(self.printOutput)
@@ -2463,14 +2463,14 @@ class MainWindow(qtw.QMainWindow):
     def submitTensionsAndLoadNext(self):
         self.labelResonanceSubmitStatus.setText("Submitting...")
         self.submitTensions()
-        
+
         for row in range(self.recentScansFilterProxy.rowCount()):
             wire = self.recentScansFilterProxy.index(row, Results.WIRE_SEGMENT ).data()
             submitted = self.recentScansFilterProxy.index(row, Results.SUBMITTED ).data()
-            if submitted == "Auto": 
+            if submitted == "Auto":
                 self.loadResultsScan(row)
                 break
-        
+
     def disableRelaysThreadComplete(self):
         print("disableRelaysThreadComplete")
         self._setScanButtonAction('START')
@@ -2483,10 +2483,10 @@ class MainWindow(qtw.QMainWindow):
         self.btnScanCtrlAdv.setStyleSheet("background-color : orange")
         self.btnScanCtrlAdv.setText("Disabling relays...")
 
-        
+
     def disableRelays(self):
         self.uz.disableAllRelays() # Break all relay connections to let charge bleed off of wires
-        
+
     def disableRelaysThread(self):
         # Pass the function to execute
         worker = Worker(self.disableRelays)
@@ -2495,7 +2495,7 @@ class MainWindow(qtw.QMainWindow):
 
         # execute
         self.threadPool.start(worker)
-        
+
 
     def startScan(self):
         #need to create dictionaries in this thread to actually update inputs and files
@@ -2519,8 +2519,8 @@ class MainWindow(qtw.QMainWindow):
         is_flex_connection_winderlike = True
         if self.configStage == "Installation (Top)": is_flex_connection_winderlike = False
 
-        self.updateApaUuidListModel()  
-        
+        self.updateApaUuidListModel()
+
         useAdvParamsRes  = not self.advDisableResParamCb.isChecked()
         useAdvParamsCont = not self.advDisableContParamCb.isChecked()
         useAdv = useAdvParamsRes or useAdvParamsCont
@@ -2565,11 +2565,11 @@ class MainWindow(qtw.QMainWindow):
             self.apaChannels[dwaChannel] = apaChannel
 
         self.activeRegisters = [ii for ii in range(len(self.apaChannels)) if self.apaChannels[ii]]  # Which DWA channels have data?
-            
+
         self.wires.sort(key = int) # redundant?
 
         fpgaConfig = config_generator.configure_default()
-        
+
         #print(f"self.configLayer, channels = {self.configLayer}, {channels}")
         #print(f"  type(channels) = {type(channels)}")
 
@@ -2577,16 +2577,16 @@ class MainWindow(qtw.QMainWindow):
         fpgaConfig.update(config_generator.configure_fixed_frequency())
 
         if useAdv:
-            if advInitDelay: 
+            if advInitDelay:
                 if advStimTime: fpgaConfig.update(config_generator.configure_wait_times(advInitDelay, advStimTime))
                 else: fpgaConfig.update(config_generator.configure_wait_times(advInitDelay))
             elif advStimTime: fpgaConfig.update(config_generator.configure_wait_times(stim_time=advStimTime))
-            
-            if advStimAmplitude and advDigipotAmplitude: 
+
+            if advStimAmplitude and advDigipotAmplitude:
                 fpgaConfig.update(config_generator.configure_gains(stim_freq_max=freqMax, stim_mag=advStimAmplitude, digipot=advDigipotAmplitude))
             elif advStimAmplitude:
                 fpgaConfig.update(config_generator.configure_gains(stim_freq_max=freqMax, stim_mag=advStimAmplitude))
-            elif advDigipotAmplitude: 
+            elif advDigipotAmplitude:
                 fpgaConfig.update(config_generator.configure_gains(stim_freq_max=freqMax, digipot=advDigipotAmplitude))
 
         fpgaConfig.update(config_generator.configure_sampling()) # TODO: Should this be configurable?
@@ -2596,7 +2596,7 @@ class MainWindow(qtw.QMainWindow):
         # FIXME: should these keys match DATABASE_FIELDS?
         dataConfig = {"apaChannels": self.apaChannels, "wireSegments": self.wires,
                       "measuredBy": self.configMeasuredBy, "stage": self.configStage,
-                      "apaUuid": self.configApaUuid, 
+                      "apaUuid": self.configApaUuid,
                       "layer": self.configLayer, "headboardNum": self.configHeadboard,
                       "side": self.configApaSide, "type": scanType
                       }
@@ -2604,14 +2604,14 @@ class MainWindow(qtw.QMainWindow):
         self._loadDaqConfig()
 
         #self.combinedConfig = {"FPGA": fpgaConfig, "DATABASE": dataConfig, "DAQ": self.daqConfig}
-        
+
         fpgaConfig.update(config_generator.configure_scan_frequencies(freqMin, freqMax, stim_freq_step = freqStep))
         fpgaConfig.update(config_generator.configure_noise_subtraction(freqMin, freqMax))
 
         self.combinedConfig = {"FPGA": fpgaConfig, "DATABASE": dataConfig, "DAQ": self.daqConfig}
 
         print(self.combinedConfig)
-        
+
         self.makeScanOutputDir(scanType)
         config_generator.write_config(self.combinedConfig, 'dwaConfig.ini', self.scanRunDataDir) #self.configFileDir
         self.configFile = os.path.join(self.scanRunDataDir, "dwaConfig.ini")
@@ -2627,7 +2627,7 @@ class MainWindow(qtw.QMainWindow):
             print("  Directory did not exist...made {}".format(dataDir))
         except FileExistsError:
             logging.warning("  Directory already exists: [{}]".format(dataDir))
-        
+
         self.timeString = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
         #above makes the scan directory for auto scans, below gives the final scan directory its name
 
@@ -2635,10 +2635,10 @@ class MainWindow(qtw.QMainWindow):
         if scanType == 'Tension': scanTypeLabel = 'T'
         if scanType == 'Continuity': scanTypeLabel = 'C'
         wires = "-".join([str(w) for w in self.wires])
-        self.scanRunDataDir = os.path.join(dataDir, self.timeString + "_" + self.configLayer + "_" + self.configApaSide + 
+        self.scanRunDataDir = os.path.join(dataDir, self.timeString + "_" + self.configLayer + "_" + self.configApaSide +
         "_" + str(self.configHeadboard) + "_" + str(wires) + "_" + scanTypeLabel)
         os.makedirs(self.scanRunDataDir)
-     
+
     def startScanAdv(self):
         self.configFile = self.configFileName.text()
 
@@ -2664,7 +2664,7 @@ class MainWindow(qtw.QMainWindow):
 
         self.scanRunDataDir = os.path.join(*subdirs)
         print(f"Making directory: {self.scanRunDataDir}")
-        os.makedirs(self.scanRunDataDir, exist_ok=True) 
+        os.makedirs(self.scanRunDataDir, exist_ok=True)
         # copy the config file into the scan output directory
         shutil.copy(self.configFile, os.path.join(self.scanRunDataDir, 'dwaConfig.ini'))
 
@@ -2696,13 +2696,13 @@ class MainWindow(qtw.QMainWindow):
             self.ampData[field] = dbConfig[field] if dbConfig else None
 
         print(f'self.ampData = {self.ampData}')
-            
-            
+
+
     def runScan(self):
 
         # Update text in table to indicate that scan is running
         self.scanConfigTableModel.item(self.scanConfigRowToScan, Scans.STATUS).setText('Running')
-        
+
         # runScan() is in a thread...  need to get logger?
         logger = logging.getLogger(__name__)
         logger.info(self.configFile)
@@ -2736,7 +2736,7 @@ class MainWindow(qtw.QMainWindow):
             time.sleep(0.5) # sleep to let HV drain
         except:
             self.logger.error("DWA hvDisable failed")
-            
+
         try:
             self.logger.info('======= dwaConfig() ===========')
             print('======= dwaConfig() ===========')
@@ -2754,7 +2754,7 @@ class MainWindow(qtw.QMainWindow):
         except:
             self.logger.error("DWA hvEnable failed")
 
-            
+
         try:
             self.logger.info('======= dwaStart() ===========')
             print('======= dwaStart() ===========')
@@ -2764,7 +2764,7 @@ class MainWindow(qtw.QMainWindow):
             #self.uz.stat()
         except:
             self.logger.error("DWA run start failed")
-            
+
 
     #@pyqtSlot()
     #def quitAll(self):
@@ -2780,14 +2780,14 @@ class MainWindow(qtw.QMainWindow):
         self.currentViewStim = self.tabWidgetStim.currentIndex()
         if self.verbose > 0:
             print(f"tabWidgetStim changed... self.currentViewStim = {self.currentViewStim}")
-        
+
 
     @pyqtSlot()
     def resFitParameterUpdated(self):
         # DEFUNCT: We dont have user customizable fit parameters anymore (should we make the new algorithm configurable?)
         self.runResonanceAnalysis()
 
-    def resFreqGetParams(self): 
+    def resFreqGetParams(self):
         # DEFUNCT: We dont have user customizable fit parameters anymore (should we make the new algorithm configurable?)
         self._resFreqSetDefaultParams()  # reset to defaults
 
@@ -2812,7 +2812,7 @@ class MainWindow(qtw.QMainWindow):
 
         print("BEFORE READING KWARGS:")
         print(f'   self.resFitParams = {self.resFitParams}')
-        
+
         # read the kwargs field, (which takes precedence over anything set previously)!
         # expect: "key1=val1, key2=val2, ..."
         kwargString = self.resFitKwargs.text().strip()
@@ -2834,7 +2834,7 @@ class MainWindow(qtw.QMainWindow):
         val = self.configApaUuidLineEdit.text().strip()
         if val == "":
             return
-        
+
         self.configApaUuid = val
         print(f"self.configApaUuid = [{self.configApaUuid}]")
 
@@ -2843,7 +2843,7 @@ class MainWindow(qtw.QMainWindow):
         # Load the results table using the specified UUID
         self.resultsTableLoad()
 
-        
+
     @pyqtSlot()
     def configFileNameEnter(self):
         self.configFile = self.configFileName.text()
@@ -2851,8 +2851,8 @@ class MainWindow(qtw.QMainWindow):
 
 
     def loadResultsScan(self, row=None):
-        # 
-        if row == None: 
+        #
+        if row == None:
             index = self.recentScansTableView.currentIndex()
             row = index.row()
         col = Results.SCAN
@@ -2862,7 +2862,7 @@ class MainWindow(qtw.QMainWindow):
         print(f"APA UUID: {self.configApaUuid}") # 43cd3950-268d-11ec-b6f5-a70e70a44436
         apaSubdir = f'APA_{self.configApaUuid}'  # APA_43cd3950-268d-11ec-b6f5-a70e70a44436
         print(f'apaSubdir: {apaSubdir}')
-        
+
         scanDir = os.path.join(OUTPUT_DIR_SCAN_DATA, apaSubdir, scan)
         print(f'scanDir = {scanDir}') # scanData/raw/APA_43c...436/G_A_1_1-...-15_20211022T093618
         scanFile = os.path.join(OUTPUT_DIR_SCAN_DATA, apaSubdir, scan, 'amplitudeData.json')
@@ -2871,7 +2871,7 @@ class MainWindow(qtw.QMainWindow):
         # Switch focus to the plot tab
         self.currentViewResults = ResultsView.PROCESSED
         self.viewResults()
-        
+
     def loadRecentScanData(self):
         # DEFUNCT: not used anymore.. vestige of "recent scans" table, which no longer exists
         # (was replaced by "Results" table
@@ -2886,11 +2886,11 @@ class MainWindow(qtw.QMainWindow):
 
     # def readResultsJSON(self, make_new=False):
     #     # if make_new is True, then create a JSON file if it does not yet exist
-        
+
     #     self.configApaUuid = self.configApaUuidLineEdit.text().strip()
     #     if self.configApaUuid == "":
     #         return
-        
+
     #     filename = f'{self.configApaUuid}.json'
     #     filepath = os.path.join(OUTPUT_DIR_PROCESSED_DATA, filename)
     #     try: # Ensure that there is an amplitudeData.json file present!
@@ -2905,12 +2905,12 @@ class MainWindow(qtw.QMainWindow):
     #             self.newResultsDict()
     #             #self.resultsDict = process_scan.new_results_dict(APA_LAYERS, APA_SIDES, MAX_WIRE_SEGMENT)
     #             #self.resultsDict = process_scan.new_results_dict(APA_STAGES, APA_LAYERS, APA_SIDES, MAX_WIRE_SEGMENT)
-                
+
 
     def newResultsDict(self):
         return process_scan.new_results_dict(APA_STAGES_SCANS, APA_LAYERS,
                                                          APA_SIDES, MAX_WIRE_SEGMENT)
-        
+
     def getResultsDict(self):
         print('self.getResultsDict():')
 
@@ -2918,7 +2918,7 @@ class MainWindow(qtw.QMainWindow):
 
         if self.configApaUuid is None:
             print("\n\n\nERROR ERROR ERROR ERROR: apaUuid is None!!!!!\n\n\n")
-        
+
         try: # load the existing JSON file if it exists
             filename = os.path.join(OUTPUT_DIR_PROCESSED_DATA, f'{self.configApaUuid}.json')
             with open(filename, "r") as fh:
@@ -2929,7 +2929,7 @@ class MainWindow(qtw.QMainWindow):
             #self.resultsDict = process_scan.new_results_dict(APA_LAYERS, APA_SIDES, MAX_WIRE_SEGMENT)
             #self.resultsDict = process_scan.new_results_dict(APA_STAGES_SCANS, APA_LAYERS,
             #                                                 APA_SIDES, MAX_WIRE_SEGMENT)
-                
+
     def getApaUuid(self):
         print('self.getApaUuid()')
         val = self.configApaUuidLineEdit.text().strip()
@@ -2942,7 +2942,7 @@ class MainWindow(qtw.QMainWindow):
         # so if user loads data from multiple APA UUIDs then data can be lost or mis-classified (wrong UUID)
         # also, there is no provision to keep track of stage that scan was taken...
         print('loadArbitraryScanData:')
-        
+
         # open a file selection dialog for user to input a scan filename
         options = qtw.QFileDialog.Options()
         #options |= qtw.QFileDialog.DontUseNativeDialog
@@ -2977,7 +2977,7 @@ class MainWindow(qtw.QMainWindow):
                 print(sd)
                 toks = os.path.normpath(sd).split(os.path.sep)
                 if (toks[-2][0:4] != 'APA_'): continue
-                uuid = toks[-2][4:] # remove "APA_" from start 
+                uuid = toks[-2][4:] # remove "APA_" from start
                 apaUuids.append(uuid)
                 scansToProcess.append(sd)
 
@@ -2992,10 +2992,10 @@ class MainWindow(qtw.QMainWindow):
             self.configApaUuid = list(uniqueApaUuids)[0]
             # Update the UUID text field in the GUI
             self.configApaUuidLineEdit.setText(self.configApaUuid)
-                
+
         # Prepare dictionary to hold results of scan analysis
         resultsDict = self.getResultsDict()
-        
+
         # process each scan
         for scan in scansToProcess:
             process_scan.process_scan(resultsDict, scan, MAX_FREQ)
@@ -3009,7 +3009,7 @@ class MainWindow(qtw.QMainWindow):
         # update the results table
         self.resultsTableLoad()
 
-            
+
     def loadSavedScanData(self, filename):
         print("loadSavedScanData",filename)
         self._initSavedAmpDataPlots()
@@ -3061,7 +3061,7 @@ class MainWindow(qtw.QMainWindow):
         except:
             freqList = []
         return freqList
-        
+
     #@pyqtSlot()
     def _f0LineClicked(self, infLine, clickEvt):
         # evt is an InfiniteLine and an event (sigClicked sent by InfiniteLine)
@@ -3096,11 +3096,11 @@ class MainWindow(qtw.QMainWindow):
             print("error: could not find the plot that owns {infLine}")
             print("cannot remove line from the plot...")
         del infLine
-        
+
         self._updateResFreqsFromLineLocations(source)
         self.resFreqUpdateDisplay(chan=None)  # update GUI
         self.removedInfLine = True
-        
+
     #@pyqtSlot()
     def _evtVwrF0LineMoved(self):
         print("\n\n\nevtVwr f0 Line moved")
@@ -3116,18 +3116,18 @@ class MainWindow(qtw.QMainWindow):
         # Find closest frequency
         diffs = np.abs(np.array(self.evtData['freqUnion'])-fDragged)
         dfMin = np.min(diffs)
-        idx = np.where(diffs == dfMin)[0][0]            
+        idx = np.where(diffs == dfMin)[0][0]
         # Update values
         f0 = self.evtData['freqUnion'][idx]
         self.evtData['freqIdx'] = idx
         self.evtData['freqCurrent'] = f0
         ## Update plots
         self.evtVwrUpdatePlots(plotAmpl=False)
-        
+
     #@pyqtSlot()
     def _f0LineMoved(self, evt):
         # evt is an InfiniteLine instance (sigDragged event from InfiniteLine)
-        
+
         print("f0Line moved")
         print(f"evt = {evt}")
         print(f"self.resFitLines['raw'] = {self.resFitLines['raw']}")
@@ -3167,7 +3167,7 @@ class MainWindow(qtw.QMainWindow):
         movedLine = self.resFitLines[source][c][s][l]
         newValue = movedLine.value()
         oldValue = self.resonantFreqs[c][s][l]
-        self.resonantFreqs[c][s] = [(newValue/oldValue)*x for x in self.resonantFreqs[c][s]] #self.resonantFreqs[c][s] + newValue - oldValue  
+        self.resonantFreqs[c][s] = [(newValue/oldValue)*x for x in self.resonantFreqs[c][s]] #self.resonantFreqs[c][s] + newValue - oldValue
         self.resFreqUpdateDisplay(chan=None)
         # loop over all channels. Get locations of lines
         # for reg in self.registers:
@@ -3175,7 +3175,7 @@ class MainWindow(qtw.QMainWindow):
         #     for infLine in self.resFitLines[source][c]: # re-create resFreq list
         #         self.resonantFreqs[reg.value].append(infLine.value())
         #         self.resonantFreqs[reg.value].sort()
-        
+
     @pyqtSlot()
     def viewStimulus(self):
         self.currentViewStage = MainView.STIMULUS
@@ -3187,7 +3187,7 @@ class MainWindow(qtw.QMainWindow):
         self.currentViewStage = MainView.RESULTS
         self.updateTabView()
         self.logger.info("View Resonant Frequencies")
-            
+
     @pyqtSlot()
     def viewTensions(self):
         self.currentViewStage = MainView.TENSION
@@ -3199,13 +3199,13 @@ class MainWindow(qtw.QMainWindow):
         self.currentViewStage = MainView.LOG
         self.updateTabView()
         self.logger.info("View LOG")
-        
+
     @pyqtSlot()
     def viewEvtVwr(self):
         self.currentViewStage = MainView.EVTVWR
         self.updateTabView()
         self.logger.info("View EVENT VIEWER")
-        
+
     @pyqtSlot()
     def viewConfig(self):
         self.currentViewStage = MainView.STIMULUS
@@ -3247,7 +3247,7 @@ class MainWindow(qtw.QMainWindow):
             self.curves['amplchan']['main'].setData(x, y)
             self.pw_amplchan_main.setTitle(chan)
             self.chanViewMainAmpl = chan
-        
+
     @pyqtSlot(int)
     def viewChan(self, chan):
         self.currentViewStage = MainView.STIMULUS
@@ -3272,9 +3272,9 @@ class MainWindow(qtw.QMainWindow):
             with open(self.fnOfAmpData, 'w') as outfile:
                 json.dump(self.ampData, outfile)
             print(f"Saved as {self.fnOfAmpData}")
-            self.logger.info(f"Saved as {self.fnOfAmpData}") 
+            self.logger.info(f"Saved as {self.fnOfAmpData}")
         else:
-            self.logger.info(f"No run to save.") 
+            self.logger.info(f"No run to save.")
 
     @pyqtSlot()
     def loadTensions(self):
@@ -3333,8 +3333,8 @@ class MainWindow(qtw.QMainWindow):
                 self.tensionPlots['tensionOfWireNumber'][layer][side].addItem(scatter)
                 pos = [{'pos': [i,self.tensionData[layer+side][i]]} for i in range(len(self.tensionData[layer+side]))]
                 scatter.setData(pos)
-            
-        
+
+
     def submitTensions(self, selectedDwaChan=None):
         #TODO: Fix this so that it writes to file in scanData/processed/ instead of database
         self.labelResonanceSubmitStatus.setText("Submitting...")
@@ -3349,12 +3349,12 @@ class MainWindow(qtw.QMainWindow):
         #tensionTable = database_functions.get_tension_table(sietch, apaUuid, stage)
         #if tensionTable:
         #    wireData = tensionTable['data']['wireSegments']
-        fullResultsDict = self.getResultsDict() 
-        scanResultsDict = self.newResultsDict() 
-        
+        fullResultsDict = self.getResultsDict()
+        scanResultsDict = self.newResultsDict()
+
 
         for dwaChan in range(N_DWA_CHANS):
-            if selectedDwaChan != None and dwaChan != selectedDwaChan: 
+            if selectedDwaChan != None and dwaChan != selectedDwaChan:
                 continue
             if dwaChan in self.activeRegistersS:
                 apaChan = self.ampDataS['apaChannels'][dwaChan]
@@ -3411,7 +3411,7 @@ class MainWindow(qtw.QMainWindow):
         #     },
         # }
         # wireData[self.tensionLayer] = self.tensionData
-        
+
         # record_result = {
         #     "componentUuid":database_functions.get_tension_frame_uuid_from_apa_uuid(sietch, apaUuid),
         #     "formId": "Wire Tensions",
@@ -3431,12 +3431,12 @@ class MainWindow(qtw.QMainWindow):
         self.labelResonanceSubmitStatus.setText("Submitted!")
         self.resultsTableLoad()
         #self.resultsTableUpdate(scanResultsDict)
-        
+
     def saveResonanceData(self):
         resData = {}
 
         print(f'self.resonantFreqs = {self.resonantFreqs}')
-        
+
         # Get the actual resonance frequencies (perhaps obtained with manual intervention)
         resData['resonances'] = {}
 
@@ -3444,21 +3444,21 @@ class MainWindow(qtw.QMainWindow):
             apaChan = self.ampDataS['apaChannels'][reg.value]
             if not apaChan: continue
             resData['resonances'][reg.value] = self.resonantFreqs[reg.value]
-        
+
         # Get fit parameters and algorithm-determined resonances
         resData['fit'] = self.resFitToLog
-            
+
         print(f"resData = {resData}")
-        
+
         try:
             with open(self.fnOfResData, 'w') as outfile:
                 json.dump(resData, outfile)
-            print(f"Saved resonance data as: {self.fnOfResData}") 
-            self.logger.info(f"Saved as {self.fnOfResData}") 
+            print(f"Saved resonance data as: {self.fnOfResData}")
+            self.logger.info(f"Saved as {self.fnOfResData}")
         except:
             self.logger.info(f"Cannot save resonance data")
 
-        
+
     @pyqtSlot()
     def submitResonances(self):
         return #TODO: Remove this, we no longer submit resonances
@@ -3470,7 +3470,7 @@ class MainWindow(qtw.QMainWindow):
         sietch = SietchConnect("sietch.creds")
 
         note = self.submitResonanceNoteLineEdit.text()
-        
+
         out = database_functions.get_tension_frame_uuid_from_apa_uuid(sietch, self.ampDataS["apaUuid"])
         #pointerTable = get_pointer_table(sietch, apa_uuid, stage)
         pointerTable = database_functions.get_pointer_table(sietch, self.ampDataS['apaUuid'], self.ampDataS['stage'])
@@ -3542,7 +3542,7 @@ class MainWindow(qtw.QMainWindow):
         for row in range(len(tableData)):
             if tableData[row]['scanName'] == self.recentScansNameOfLoadedScan:
                 self.recentScansTableModel.setSubmitted(row, Submitted.YES)
-            
+
         #self.recentScansTableModel.setSubmitted(self.recentScansTableRowInUse, Submitted.YES)
         self.recentScansTableModel.layoutChanged.emit()
 
@@ -3559,7 +3559,7 @@ class MainWindow(qtw.QMainWindow):
         #wireDataFilenames = [ f'{scanId}_{nn:02d}.txt' for nn in range(N_DWA_CHANS) ]
         #wireDataFilenames = [ os.path.join(fileroot, ff) for ff in wireDataFilenames ]
         #runHeaderFile = os.path.join(fileroot, f'{scanId}_FF.txt')
-    
+
     def loadEventDataViaFileBrowser(self):
         #options = qtw.QFileDialog.Options()
         #options |= qtw.QFileDialog.DontUseNativeDialog
@@ -3568,7 +3568,7 @@ class MainWindow(qtw.QMainWindow):
         #                                                  options=options)
         scanDir = qtw.QFileDialog.getExistingDirectory(self,"Select directory")
         print("scanDir = {scanDir}")
-        
+
         validScanDir = True
         if not scanDir:  # fixme: better check for valid scan
             validScanDir = False
@@ -3618,7 +3618,7 @@ class MainWindow(qtw.QMainWindow):
                     'stimPeriod_int':{},
                     'dt':{}
                    }
-        
+
         for ii in range(N_DWA_CHANS):
             tmpData['dt'][ii] = []              # list for each channel
             tmpData['freq'][ii] = []            # list for each channel
@@ -3644,13 +3644,13 @@ class MainWindow(qtw.QMainWindow):
             for ifreq in range(nfreqs):
                 self.evtDataParser.parse(udpData[ichan][ifreq])
                 udpCounterList.append(self.evtDataParser.dwaPayload[ddp.Frame.UDP]['UDP_Counter'])
-                
+
                 # extract the V(t) and stim period data for each channel
                 tmpData['V(t)'][ichan].append(self.evtDataParser.dwaPayload[ddp.Frame.ADC_DATA]['adcSamples'])
                 tmpData['stimPeriod_int'][ichan].append(self.evtDataParser.dwaPayload[ddp.Frame.FREQ]['stimPeriodActive'])
                 tmpData['freq'][ichan].append(self.evtDataParser.dwaPayload[ddp.Frame.FREQ]['stimFreqActive_Hz'])
                 tmpData['dt'][ichan].append(self.evtDataParser.dwaPayload[ddp.Frame.FREQ]['adcSamplingPeriod']*1e-8)
-                
+
         # Come up with a master list of frequencies (if data is dropped, then not all channels will have all frequencies)
         self.evtData['stimPeriodUnion'] = np.array(list(set().union(tmpData['stimPeriod_int'][0],
                                                                     tmpData['stimPeriod_int'][1],
@@ -3669,7 +3669,7 @@ class MainWindow(qtw.QMainWindow):
         #self.evtData['freqUnion'] = CLOCK_PERIOD_SEC/self.evtData['stimPeriodUnion']
         self.evtData['freqUnion'] = (1e12/self.evtData['stimPeriodUnion'])/78.125 # convert period in 78.125ps to freq in Hz
         #print(self.evtData['freqUnion'])
-        
+
         # Second pass through the data -- align individual channel data with the master frequency list
         # indexed in a consistent way across channel (all channels share a single frequency array)
         # Missing data is represented by None instead of a list of data
@@ -3692,7 +3692,7 @@ class MainWindow(qtw.QMainWindow):
                     amp = np.nan
                     tfit = None
                     yfit = None
-                    
+
                 self.evtData['V(t)'][ichan].append(vt)
                 self.evtData['V(t)_time'][ichan].append(tt)
                 self.evtData['A(f)'][ichan].append(amp)
@@ -3702,9 +3702,9 @@ class MainWindow(qtw.QMainWindow):
         # Update the A(f) and V(t) plots
         #for ichan in range(N_DWA_CHANS):
         self.evtData['freqIdx'] = 0
-        self.evtData['freqCurrent'] = self.evtData['freqUnion'][self.evtData['freqIdx']] 
+        self.evtData['freqCurrent'] = self.evtData['freqUnion'][self.evtData['freqIdx']]
         self.evtVwrUpdatePlots(plotAmpl=True)
-            
+
         #print("Payload -------------------")
         #print(self.evtDataParser.dwaPayload)
         #print(self.evtData['freq'])
@@ -3732,7 +3732,7 @@ class MainWindow(qtw.QMainWindow):
         for reg in range(N_DWA_CHANS):
             self.curves['resRawFit'][reg].setData([])
             self.curves['resProcFit'][reg].setData([])
-        
+
     def _loadSavedAmpData(self, ampFilename):
         print(f"ampFilename = {ampFilename}")
         self.ampDataActiveLabel.setText(f'Current: {ampFilename}')
@@ -3751,7 +3751,7 @@ class MainWindow(qtw.QMainWindow):
                 self.activeRegistersS.append(reg.value)
 
         #print(f"Active registers for the saved data is: {self.activeRegistersS}")
-                
+
         self.ampDataS = {}  # "S" = "Saved"
         #for reg in self.registers:
         for chan in self.activeRegistersS:
@@ -3763,7 +3763,7 @@ class MainWindow(qtw.QMainWindow):
                                         'ampl':data[str(chan)]['ampl'] } # amplitude in ADC counts
             self.curves['resRawFit'][chan].setData(self.ampDataS[chan]['freq'],
                                                    self.ampDataS[chan]['ampl'])
-            
+
 
         # Get the Metadata
         for field in DATABASE_FIELDS:
@@ -3781,13 +3781,13 @@ class MainWindow(qtw.QMainWindow):
 
         self.fnOfResData = ampFilename.replace('amplitudeData.json', 'resonanceData.json')
 
-            
+
     def _loadConfigFile(self, updateGui=True):
-        #updateGui function no longer works with left column  and original textbox removed 
+        #updateGui function no longer works with left column  and original textbox removed
         # try to read the requested file
         # if found, display contents
         # if not found, display error message
-       
+
         print("=== _loadConfigFile ===")
 
         # FIXME: should probably pass scan type information to _loadConfigFile...
@@ -3811,7 +3811,7 @@ class MainWindow(qtw.QMainWindow):
 
         if not validConfigFilename:
             return
-                
+
         # read/parse config file
         #self.dwaConfigFile = dcf.DwaConfigFile(self.configFile, sections=['FPGA'])
         self.dwaConfigFile = dcf.DwaConfigFile(self.configFile)
@@ -3833,8 +3833,8 @@ class MainWindow(qtw.QMainWindow):
         '''
         Converts a UDP transmission (single string) into a python list
 
-        Each entry in the list is a string representation of a 32-bit hex word 
-        
+        Each entry in the list is a string representation of a 32-bit hex word
+
 
         e.g.
        >>> udpDataStr  = 'AAAA0002100000F1110000FFAAAAAAAA'
@@ -3885,8 +3885,8 @@ class MainWindow(qtw.QMainWindow):
 
         self._initResonanceExpLines()
 
-        
-                
+
+
     def _clearTimeseriesData(self):
         plotTypes = ['grid', 'chan']
         for ptype in plotTypes:
@@ -3896,7 +3896,7 @@ class MainWindow(qtw.QMainWindow):
                 self.curvesFit[ptype][regId].setData([])
         self.curves['chan']['main'].setData([])
         self.curvesFit['chan']['main'].setData([])
-        
+
     def _clearAmplitudeData(self):
         self.resonantFreqs = {}  # FIXME: this should not go here... should happen when A(f) data is loaded...
         self.ampData = {}        # FIXME: shouldn't really reset the dict like this...
@@ -3918,8 +3918,8 @@ class MainWindow(qtw.QMainWindow):
 
     def _configureAmplitudePlots(self):
         # Set x-ranges for frequency plots so pyqtgraph does not have to autoscale
-        #runFreqMin = self.dwaDataParser.dwaPayload[ddp.Frame.RUN]['stimFreqMin_Hz'] 
-        #runFreqMax = self.dwaDataParser.dwaPayload[ddp.Frame.RUN]['stimFreqMax_Hz'] 
+        #runFreqMin = self.dwaDataParser.dwaPayload[ddp.Frame.RUN]['stimFreqMin_Hz']
+        #runFreqMax = self.dwaDataParser.dwaPayload[ddp.Frame.RUN]['stimFreqMax_Hz']
         plotTypes = ['amplgrid', 'amplchan']
         for ptype in plotTypes:
             for ii in range(N_DWA_CHANS):
@@ -3982,8 +3982,8 @@ class MainWindow(qtw.QMainWindow):
         self.logger.info(f"self.fnOfReg = {self.fnOfReg}")
         self.fnOfAmpData = os.path.join(self.scanRunDataDir, "amplitudeData.json")
         #self.run = self.scanRunDataDir
-        print(f"self.fnOfAmpData = {self.fnOfAmpData}") 
-        self.logger.info(f"self.fnOfAmpData = {self.fnOfAmpData}") 
+        print(f"self.fnOfAmpData = {self.fnOfAmpData}")
+        self.logger.info(f"self.fnOfAmpData = {self.fnOfAmpData}")
 
     def startUdpReceiver(self, newdata_callback):
         # initiate a DWA acquisition
@@ -4002,7 +4002,7 @@ class MainWindow(qtw.QMainWindow):
         if self.udpListening:
             return
 
-        
+
         while True:
             try:
                 self.udpListening = True
@@ -4010,11 +4010,11 @@ class MainWindow(qtw.QMainWindow):
                 if self.verbose > 0:
                     logger.info("")
                     logger.info("bing! data received")
-                #logger.info(data)                
+                #logger.info(data)
                 udpDataStr = binascii.hexlify(data).decode(self.udpEnc).upper()
                 if self.verbose > 0:
                     logger.info(udpDataStr)
-                
+
                 # Break up string into a list of 8-character chunks
                 dataStrings = self._makeWordList(udpDataStr)
 
@@ -4024,7 +4024,7 @@ class MainWindow(qtw.QMainWindow):
                 if self.verbose > 0:
                     print("dataStrings = ")
                     print(dataStrings)
-                    
+
                 # Parse UDP transmission
                 self.dwaDataParser.parse(dataStrings)
                 if 'FFFFFFFF' in dataStrings:
@@ -4053,7 +4053,7 @@ class MainWindow(qtw.QMainWindow):
                         #self._clearAmplitudeData()  # cannot go here (in non-GUI thread)
                         if self.verbose > 0:
                             logger.info(self.fnOfReg)
-                
+
                 # write data to file by register
                 reg = self.dwaDataParser.dwaPayload[ddp.Frame.UDP]['Register_ID_hexStr']
                 # Don't write status frames to disk
@@ -4067,9 +4067,9 @@ class MainWindow(qtw.QMainWindow):
                         for item in dataStrings:
                             regFH.write(f'{item}\n')
                         regFH.close()
-                    
+
                 newdata_callback.emit(self.dwaDataParser.dwaPayload)
-                    
+
             except socket.timeout:
                 if self.verbose > 0:
                     logger.info("  UDP Timeout")
@@ -4091,7 +4091,7 @@ class MainWindow(qtw.QMainWindow):
         self.logger.info(kk)
 
         self.outputText.appendPlainText("UDP Counter: {}".format(udpDict[ddp.Frame.UDP]['UDP_Counter']))
-        
+
         # Look for run header frame
         if ddp.Frame.RUN in udpDict:   # Assumes this is start of a new scan
             self.outputText.appendPlainText("\nFOUND RUN HEADER")
@@ -4114,13 +4114,13 @@ class MainWindow(qtw.QMainWindow):
                 self.globalFreqActive_val.setText(f"--")
 
                 self._clearTimeseriesData()
-                self._clearAmplitudeData() 
+                self._clearAmplitudeData()
                 self._setScanMetadata()    # must come after clearAmplitudeData
                 self._configureAmplitudePlots() # must come after setScanMetadata()
-                
+
                 print("\n\nSCAN START")
                 print(f"self.ampData = {self.ampData}")
-                
+
             #if end of scan...
             elif udpDict[ddp.Frame.RUN]['runStatus'] == SCAN_END:
                 print("\n SCAN IS DONE!!!")
@@ -4128,7 +4128,7 @@ class MainWindow(qtw.QMainWindow):
                 self.saveAmplitudeData()  # do this first to avoid data loss
 
                 self.formatRunStatusIndicators(state='stale')
-                
+
                 # FIXME: shouldn't really change button state or controller state via
                 # RUN end frame. Should only do this from STATUS frame...
                 #print("\nScan button disable\n")
@@ -4138,11 +4138,11 @@ class MainWindow(qtw.QMainWindow):
                 #qtc.QCoreApplication.processEvents()
                 print("Disable relays")
                 self.disableRelaysThread()
-                
+
                 #print("UPDATING PLOTS ONE LAST TIME")
                 self.updatePlots(force_all=True)
                 self.wrapUpStimulusScan()
-                
+
                 #if the scan is auto, then when it finishes and the scan is over this
                 #finds what row was scanned and updates the status for that row
                 #this also selects the next row
@@ -4164,17 +4164,17 @@ class MainWindow(qtw.QMainWindow):
                     else:
                         self.scanConfigRowToScan += 1
                     self.scanConfigTable.selectRow(self.scanConfigRowToScan)
-                    
+
                 self.scanType = None
-                
+
             else:
-                 print("ERROR: unknown value of runStatus:")   
+                 print("ERROR: unknown value of runStatus:")
                  print(udpDict[ddp.Frame.RUN])
                  print(udpDict[ddp.Frame.RUN]['runStatus'])
-            
-            
+
+
         # Look for frequency header
-        if ddp.Frame.FREQ in udpDict:  
+        if ddp.Frame.FREQ in udpDict:
             self.logger.info("FOUND FREQUENCY HEADER")
             self.logger.info(udpDict)
             self.globalFreqActive_val.setText(f"{udpDict[ddp.Frame.FREQ]['stimFreqActive_Hz']:.4f}")
@@ -4182,7 +4182,7 @@ class MainWindow(qtw.QMainWindow):
         # Check to see if this is an ADC data transfer:
         if ddp.Frame.ADC_DATA in udpDict:
             self.outputText.appendPlainText("\nFOUND ADC DATA\n")
-            
+
             # update the relevant plot...
             regId = udpDict[ddp.Frame.FREQ]['Register_ID_Freq']
             self.logger.info(f'regId = {regId}')
@@ -4193,17 +4193,17 @@ class MainWindow(qtw.QMainWindow):
             #print(f" regId = {regId}; self.apaChannels = {self.apaChannels}")
             if (self.scanType == ScanType.AUTO) and (self.apaChannels[regId] is None):
                 return
-            
+
             #self.mycurves[reg].setData(udpDict[ddp.Frame.ADC_DATA]['adcSamples'])
             dt = udpDict[ddp.Frame.FREQ]['adcSamplingPeriod']*1e-8
             self.adcData[reg]['ADC'] = udpDict[ddp.Frame.ADC_DATA]['adcSamples'] # FIXME: list copy issue?
             self.adcData[reg]['time'] = np.arange(len(self.adcData[reg]['ADC']))*dt
             self.adcData[reg]['freq'] = udpDict[ddp.Frame.FREQ]['stimFreqActive_Hz']
-            
+
             #################################
             # Update plots
             self.DATA_TO_PLOT = True
-            
+
             # compute the best fit to V(t) and plot (in red)
             (B, C, D, freq_Hz) = dwa.processWaveform(udpDict)
             self.ampData[reg]['freq'].append(freq_Hz)
@@ -4212,7 +4212,7 @@ class MainWindow(qtw.QMainWindow):
             tmin, tmax = self.adcData[reg]['time'][0], self.adcData[reg]['time'][-1]
             self.adcData[reg]['tfit'] = np.linspace(tmin, tmax, nptsInFit)
             self.adcData[reg]['ADCfit'] = B*np.sin(2*np.pi*freq_Hz*self.adcData[reg]['tfit']) + C*np.cos(2*np.pi*freq_Hz*self.adcData[reg]['tfit']) + D
-            
+
         # Look for STATUS frame
         if ddp.Frame.STATUS in udpDict:
             if self.verbose > 1:
@@ -4222,7 +4222,7 @@ class MainWindow(qtw.QMainWindow):
                 print(udpDict[ddp.Frame.STATUS])
 
             #print(f"hvDisable = {udpDict[ddp.Frame.STATUS]['hvDisable']}")
-                
+
             # some status frames should be logged...
             # see DwaDataParser.py for details
             # e.g. 'trgTimeout', 'trgStateChange', 'trgButtonChange', 'trgErrorChange'
@@ -4232,7 +4232,7 @@ class MainWindow(qtw.QMainWindow):
                 self.logDwaErrorStatus(udpDict[ddp.Frame.STATUS]['statusErrorBits'])
 
             self.updateErrorStatusInGui(udpDict[ddp.Frame.STATUS]['statusErrorBits'])
-            
+
             # update heart logo
             self.updateHeartbeatLogo()
 
@@ -4242,7 +4242,7 @@ class MainWindow(qtw.QMainWindow):
                 print("\n\n enabling button via temp\n\n")
                 self.enableScanButtonTemp = False
                 self._scanButtonEnable()
-                
+
             self.dwaControllerState_val.setText(f"{udpDict[ddp.Frame.STATUS]['controllerStateStr']}")
             self.idle = False # KLUGE: we may not get status frames for all states...
             if udpDict[ddp.Frame.STATUS]['controllerStateStr'] == "IDLE":
@@ -4283,19 +4283,19 @@ class MainWindow(qtw.QMainWindow):
         fname = datetime.datetime.now().strftime("%Y%m%d.status")
         fname = os.path.join(self.scanStatusDir, fname)
         return fname
-            
+
     def formatRunStatusIndicators(self, state=None):
         if state.upper() == 'STALE':
             color = 'gray'
         elif state.upper() == 'FRESH':
             color = 'black'
-            
+
         self.globalFreqMin_val.setStyleSheet(f"color: {color}")
         self.globalFreqMax_val.setStyleSheet(f"color: {color}")
         self.globalFreqStep_val.setStyleSheet(f"color: {color}")
         self.globalFreqActive_val.setStyleSheet(f"color: {color}")
-    
-            
+
+
     def updatePlotsVGrid(self):
         #for reg in self.registers:
         for reg in self.activeRegisters:
@@ -4328,7 +4328,7 @@ class MainWindow(qtw.QMainWindow):
             self.curves['amplchan'][reg].setData(self.ampData[reg]['freq'], self.ampData[reg]['ampl'])
         # Update the main window too
         self.curves['amplchan']['main'].setData(self.ampData[self.chanViewMainAmpl]['freq'], self.ampData[self.chanViewMainAmpl]['ampl'])
-            
+
     def updatePlots(self, force_all=False):
 
         if force_all:
@@ -4350,7 +4350,7 @@ class MainWindow(qtw.QMainWindow):
                 self.updatePlotsAmpGrid()
             elif self.currentViewStim == StimView.A_CHAN:
                 self.updatePlotsAmpChan()
-            
+
         self.DATA_TO_PLOT = False
 
     def updateHeartbeatLogo(self):
@@ -4367,11 +4367,11 @@ class MainWindow(qtw.QMainWindow):
         #print(f"is unchecked:      {self.doContinuity == qtc.Qt.Unchecked}")
         #print(f"is   checked:      {self.doContinuity == qtc.Qt.Checked}")
         print(f"self.doContinuity: {self.doContinuity}")
-        
+
     def doTensionChanged(self):
         self.doTension = self.doTensionCb.isChecked()
         print(f"self.doTension: {self.doTension}")
-        
+
     def disableScanButtonForTime(self, disableDuration):
         """ disableDuration is a time in seconds """
         # CURRENTLY "FAILS" BECAUSE BUTTON IS ENABLED BY IDLE STATE IN STATUS FRAME
@@ -4407,16 +4407,16 @@ class MainWindow(qtw.QMainWindow):
 
         for scb in self.scanCtrlButtons:
             scb.repaint()
-        
+
         self._scanButtonConnect(state)
-        
+
     def _scanButtonConnect(self, state):
         try:
             self.btnScanCtrl.clicked.disconnect()
             self.btnScanCtrlAdv.clicked.disconnect()
         except:
             pass
-        
+
         if state == 'START':
             #self.btnScanCtrl.clicked.connect(self.startScanThread)
             self.btnScanCtrl.clicked.connect(self.startScanThreadHandler)
@@ -4424,13 +4424,13 @@ class MainWindow(qtw.QMainWindow):
         elif state == 'ABORT':
             self.btnScanCtrl.clicked.connect(self.abortScan)
             self.btnScanCtrlAdv.clicked.connect(self.abortScan)
-        
+
     def _submitResonanceButtonDisable(self):
         self.btnSubmitResonances.setEnabled(False)
 
     def _submitResonanceButtonEnable(self):
         self.btnSubmitResonances.setEnabled(True)
-        
+
     def _scanButtonDisable(self):
         #self._scanButtonEnable(state=False)
         self.btnScanCtrl.setEnabled(False)
@@ -4443,14 +4443,14 @@ class MainWindow(qtw.QMainWindow):
                 self.btnScanCtrl.setEnabled(True)
         if force or (self.connectedToUzed and self.idle):
             self.btnScanCtrlAdv.setEnabled(True)
-            
-            
+
+
     def _resFreqSetDefaultParams(self):
         #height=None, threshold=None, distance=None, prominence=None, width=None, wlen=None, rel_height=0.5, plateau_size=None
         self.resFitParams['find_peaks'] = {'height':None, 'threshold':None, 'distance':None,
                                            'prominence':None, 'width':None, 'wlen':None,
                                            'rel_height':0.5, 'plateau_size':None}
-        
+
     def _resFreqParseKwargParam(self, entryStr):
         entryStr = entryStr.strip()
         toks = entryStr.split(";")
@@ -4486,7 +4486,7 @@ class MainWindow(qtw.QMainWindow):
             kwargDict[key] = val
         print(f"kwargDict = {kwargDict}")
         return kwargDict
-                
+
     #def _resFreqParseWidthParam(self, entryStr):
     def _resFreqParseNumOrList(self, entryStr):
         parens_to_replace = {"(":"", ")":"", "[":"", "]":""}
@@ -4524,12 +4524,12 @@ class MainWindow(qtw.QMainWindow):
         print("Processing single")
         scanType, apaChannels, results = process_scan.process_scan(scanResultsDict, os.path.dirname(self.fnOfAmpData), MAX_FREQ, self.verbose)
         for apaChannel, result in zip(apaChannels, results):
-            if result == "bridged": 
+            if result == "bridged":
                 if self.skipChannels:
                     self.skipChannels.append(apaChannel)
                 else:
                     self.skipChannels = [apaChannel]
-                    
+
         self.someTensionsNotFound = self.checkForMissingTensions(self.fnOfAmpData, fullResultsDict)
         print(f"self.someTensionsNotFound = {self.someTensionsNotFound}")
 
@@ -4583,12 +4583,12 @@ class MainWindow(qtw.QMainWindow):
     def insertScanIntoScanList(self, scanDir, row=None, submitted=None):
         # a do-nothing function for now...
         pass
-    
+
     def insertScanIntoScanListOld(self, scanDir, row=None, submitted=None):
         '''
         scanDir:   e.g. ./scanData/APA_<UUID>/<LAYER>_<SIDE>_<HEADBOARD>_<WIRESEGMENTLIST>_<TIMESTAMP>
         row:       which row to insert this entry into
-        submitted: have the resonances from this scan been submitted yet?  
+        submitted: have the resonances from this scan been submitted yet?
         .          default is Submitted.NO, but could also be Submitted.UNKNOWN
         '''
         if self.verbose > 0:
@@ -4609,7 +4609,7 @@ class MainWindow(qtw.QMainWindow):
         self.recentScansTableModel.insertRow(row, entry)
         self.recentScansTableModel.layoutChanged.emit()
         self.recentScansTableView.resizeColumnsToContents()
-        
+
     def runResonanceAnalysis(self):
         # get A(f) data for each channel
         # run peakfinding -- assumes that peak finding parameters are already set
@@ -4618,7 +4618,7 @@ class MainWindow(qtw.QMainWindow):
 
         # FIXME: this function should be farmed out to dwaTools, or somewhere else...
         #        need only pass the self.ampDataS and self.resFitParams dictionaries
-        
+
         print("runResonanceAnalysis():")
         #self.resFreqGetParams()
         self.resFreqRunFit()
@@ -4630,7 +4630,7 @@ class MainWindow(qtw.QMainWindow):
             self.resonantFreqs[reg.value] = None
             if reg.value not in self.activeRegistersS:
                 continue
-            
+
             layer = self.ampDataS['layer']
             apaCh = self.ampDataS['apaChannels'][reg]
             if not apaCh:
@@ -4649,15 +4649,15 @@ class MainWindow(qtw.QMainWindow):
             self.resonantFreqs[reg.value] = list(opt_res_arr)
 
     def resFreqUpdateDisplay(self, chan=None):
-        """ 
-        FIXME: if chan=None, update all channels, otherwise, 
+        """
+        FIXME: if chan=None, update all channels, otherwise,
         only update the indicated channels...
         """
 
         # Remove any existing InfiniteLines from A(f) plots and reset dict
         self._clearResonanceFitLines()
         self._clearResonanceExpectedLines()
-                
+
         # FIXME: move pen definition to __init__ (self.f0pen)
         f0Pen = pg.mkPen(color='#FF0000', width=4, style=qtc.Qt.DashLine)
         fPenColor = [pg.mkPen(color='#d62728', width=4, style=qtc.Qt.SolidLine),pg.mkPen(color='#2ca02c', width=4, style=qtc.Qt.SolidLine),pg.mkPen(color='#1f77b4', width=4, style=qtc.Qt.SolidLine)]
@@ -4670,7 +4670,7 @@ class MainWindow(qtw.QMainWindow):
         print(self.activeRegistersS)
         print("###############################################")
 
-        
+
         for chan in self.activeRegistersS:
             #chan = reg.value
             #print(f'in update: {chan}: {self.resonantFreqs[chan]}')
@@ -4692,12 +4692,12 @@ class MainWindow(qtw.QMainWindow):
                     getattr(self, f'le_resfreq_val_{chan}_{seg}').setText('')
                 else:
                     getattr(self, f'le_resfreq_val_{chan}_{seg}').setEnabled(True)
-                    
+
                     if self.currentTensions[chan][seg] == -1:
                         getattr(self, f'le_resfreq_val_{chan}_{seg}').setText("")
                     else:
                         getattr(self, f'le_resfreq_val_{chan}_{seg}').setText(str(round(self.currentTensions[chan][seg],2)))
-            
+
             fitx, fity = self.curves['resProcFit'][chan].getData()
 
             # # Add expected resonances to plot
@@ -4730,15 +4730,15 @@ class MainWindow(qtw.QMainWindow):
                     #     ymax = fity[self.resFitParamsOut[chan]['peaks'][ii]]
                     #     ymin = ymax - self.resFitParamsOut[chan]['properties']['prominences'][ii]
                     #     xmin = fitx[int(np.floor(self.resFitParamsOut[chan]['properties']['left_ips'][ii]))]
-                    #     xmax = fitx[int(np.ceil(self.resFitParamsOut[chan]['properties']['right_ips'][ii]))] 
+                    #     xmax = fitx[int(np.ceil(self.resFitParamsOut[chan]['properties']['right_ips'][ii]))]
                     #     ywidth = self.resFitParamsOut[chan]['properties']['width_heights'][ii]
                     #     print(f'ymin, ymax = {ymin}, {ymax}')
                     #     print("")
                     #     self.resFitLines['procDebug'][chan].append( self.resonanceProcessedPlots[chan].plot(x=[ff,ff], y=[ymin,ymax]))
                     #     self.resFitLines['procDebug'][chan].append( self.resonanceProcessedPlots[chan].plot(x=[xmin, xmax], y=[ywidth,ywidth]))
 
-                    
-                    
+
+
                     segmentLinesProc.append( self.resonanceProcessedPlots[chan].addLine(x=f, movable=True, pen=fPenColor[ii], hoverPen=pg.mkPen(color='#d6d600', width=4, style=qtc.Qt.SolidLine)) )
                     # FIXME: should the next 2 lines really be commented out?
                     segmentLinesProc[-1].sigClicked.connect(self._f0LineClicked)
@@ -4749,7 +4749,7 @@ class MainWindow(qtw.QMainWindow):
 
                 self.resFitLines['proc'][chan].append(segmentLinesProc)
                 self.resFitLines['raw'][chan].append(segmentLinesRaw)
-                
+
     def cleanUp(self):
         self.logger.info("App quitting:")
         self.logger.info("   closing UDP connection")
@@ -4764,24 +4764,23 @@ class MyApplication(qtw.QApplication):
         self.t.start()
         ret = qtw.QApplication.notify(self, receiver, event)
         if(self.t.elapsed() > 10):
-            print(f"processing event type {event.type()} for object {receiver.objectName()} " 
+            print(f"processing event type {event.type()} for object {receiver.objectName()} "
                   f"took {self.t.elapsed()}ms")
         return ret
-        
+
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
     #app = MyApplication(sys.argv)
-    
+
     app.setWindowIcon(qtg.QIcon('icons/app.png'))
     if SYSTEM_PLATFORM == 'WINDOWS':
         myappid = u'org.dune.dwa.v3' # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     pg.setConfigOptions(antialias=False)
-    
+
     win = MainWindow()
     win.setWindowTitle(f"DWA: Digital Wire Analyzer")
     app.aboutToQuit.connect(win.cleanUp)
     app.exec_()
     #sys.exit(app.exec_())  # diff btw this and prev. line???
-        

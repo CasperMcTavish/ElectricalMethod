@@ -47,7 +47,7 @@ def load_json(file_name):
 #################
 
 
-def data_scraper(data, init_dir):
+def data_scraper(data, init_dir, stdev):
 
     # Takes initial directory from user and (if path is correct, hard coded) will scrape all relevant data.
 
@@ -96,7 +96,11 @@ def data_scraper(data, init_dir):
                     else:
 
                         wire_tension.append(values[0]['tension'])
-                        wire_tenstd.append(values[0]['tension_confidence'])
+                        # remove errors if unwanted
+                        if (stdev == True):
+                            wire_tenstd.append(values[0]['tension_confidence'])
+                        else:
+                            wire_tenstd.append(0.0)
 
 
 
@@ -124,7 +128,7 @@ def data_scraper(data, init_dir):
 # plotter
 ##########
 
-def plot_wires(dictionary ,A_B):
+def plot_wires(dictionary ,A_B, stdev):
     # plots the given 'A_B' wire plane
     # now to plot this with a function
 
@@ -151,7 +155,7 @@ def plot_wires(dictionary ,A_B):
 
 
 ## main path
-def main(path, first_key = ""):
+def main(path, stdev = True, first_key = ""):
 
     # collect data
     data = load_json(str(path))
@@ -167,7 +171,7 @@ def main(path, first_key = ""):
 
     # Scrape data
     print("Probing: {}...".format(str(first_key)))
-    dicto = data_scraper(data, first_key)
+    dicto = data_scraper(data, first_key, stdev)
 
     # ensure correct directories exist before plotting
     i_path = str("plots/individual")
@@ -183,7 +187,7 @@ def main(path, first_key = ""):
     # plot data
     # print over each key
     for i in range(len(dicto.keys())):
-        plot_wires(dicto, list(dicto.keys())[i])
+        plot_wires(dicto, list(dicto.keys())[i], stdev)
 
         # save then close
         plt.savefig(i_path + "/" + str(list(dicto.keys())[i]))
@@ -204,7 +208,7 @@ def main(path, first_key = ""):
 
         plt.subplot(plot_square, plot_square ,index+1)
         # plot image
-        plot_wires(dicto, list(dicto.keys())[index])
+        plot_wires(dicto, list(dicto.keys())[index], stdev)
 
     plt.savefig("plots/" + "compiled plots.png")
     plt.show()
@@ -213,9 +217,10 @@ def main(path, first_key = ""):
 
 # ensuring correct number of arguments
 if len(sys.argv) == 3:
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv[1], sys.argv[2], first_key = "")
 # if only one argument, ask user for first_key argument after displaying keys
 elif len(sys.argv) == 2:
-    main(sys.argv[1], "")
+    main(sys.argv[1], stdev = True, first_key = "" )
 else:
     print("dwa_plot.py takes 1 or 2 arguments (" + str(len(sys.argv)-1) + ") given")
+    print("Please input:\n  - The path to your .json file\nOptional arguments:\n  - Boolean for error plotting")

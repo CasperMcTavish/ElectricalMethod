@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 import math as m
 import os
 import sys
+import numpy as np
 
 #############
 # loader
@@ -154,6 +155,33 @@ def plot_wires(dictionary ,A_B, stdev):
     #plt.show()
 
 
+
+def plot_wires_hist(dictionary ,A_B):
+    # plots the given 'A_B' wire plane
+    # now to plot this with a function
+    n_bins = 20
+
+    y, x, _ = plt.hist(dictionary[str(A_B)]['wt'], n_bins)
+
+    # fill between given values for tolerance
+    plt.fill_between(np.linspace(5.5,7.5,num=3), 0, y.max(), color = 'purple', alpha = 0.3)
+
+    # limit range
+    #plt.xlim([0,dictionary[str(A_B)]['wno'][-1:]])
+
+    # remove a bunch of the ticks, currently every 100
+    #ticks = list(dictionary[str(A_B)]['wno'])
+    #plt.xticks([ticks[i] for i in range(len(ticks)) if i % 100 == 0], rotation='vertical')
+
+    # labels
+    plt.xlabel("Wire Tension (N)")
+
+    # code this more complexly
+    plt.title(str(A_B))
+
+    #plt.show()
+
+
 ## main path
 def main(path, stdev = True, first_key = ""):
 
@@ -194,6 +222,13 @@ def main(path, stdev = True, first_key = ""):
         # close the plot
         plt.close()
 
+        # plot histogram as well
+        plot_wires_hist(dicto, list(dicto.keys())[i])
+
+        # save then close
+        plt.savefig(i_path + "/" + str(list(dicto.keys())[i]) + "_hist")
+        # close the plot
+        plt.close()
 
 
         # Compiled image
